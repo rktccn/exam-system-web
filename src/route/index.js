@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory,createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { useStore } from '../store/main'
 
 const routes = [
@@ -27,7 +27,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useStore()
   const id = store.getId
-  if (to.name !== 'login' && id === 0) {
+  if (!(to.name === 'login' || to.name === 'register') && id === 0) {
     next({ name: 'login' })
   } else {
     next()

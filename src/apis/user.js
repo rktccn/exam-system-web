@@ -15,3 +15,18 @@ export function login(no = null, email = null, password) {
     }
   })
 }
+
+export function register(no, password, email, name, age) {
+  console.log(no, password, email, name, age)
+  return http({
+    url: '/register',
+    method: 'post',
+    data: {
+      no,
+      password,
+      email,
+      name,
+      age
+    }
+  })
+}

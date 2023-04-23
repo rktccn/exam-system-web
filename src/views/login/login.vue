@@ -32,7 +32,7 @@
           </n-form-item>
         </n-form>
 
-        <n-button class='submit' attr-type='button' @click='handleValidateClick'>
+        <n-button class='submit' attr-type='button' @click='goToRegister()'>
           注册
         </n-button>
       </div>
@@ -47,6 +47,7 @@
 import { NForm, NFormItem, NInput, NButton, NGradientText } from 'naive-ui'
 import { ref } from 'vue'
 import { login } from '../../apis/user.js'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Login',
@@ -58,6 +59,12 @@ export default {
         password: ''
       }
     })
+    const router = useRouter()
+
+    const goToRegister = () => {
+      console.log('跳转到注册页面')
+      router.push('/register')
+    }
 
 
     return {
@@ -99,15 +106,15 @@ export default {
         }).catch(() => {
           console.log('error')
         })
-      }
+      },
+      goToRegister
     }
   },
   components: {
     NForm,
     NFormItem,
     NInput,
-    NButton,
-    NGradientText
+    NButton
   }
 }
 
@@ -149,8 +156,10 @@ export default {
     .login-title {
       text-align: center;
       color: #010101;
+      padding: 0 25px;
 
-      ::after {
+
+      &:after {
         content: '';
         display: block;
         width: 60%;
