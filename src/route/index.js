@@ -4,7 +4,7 @@ import { useStore } from '../store/main'
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'index',
     component: () => import('../views/home.vue')
   },
   {
@@ -24,14 +24,14 @@ const router = createRouter({
   routes: routes
 })
 
-router.beforeEach((to, from, next) => {
-  const store = useStore()
-  const id = store.getId
-  if (!(to.name === 'login' || to.name === 'register') && id === 0) {
-    next({ name: 'login' })
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   const store = useStore()
+//   const id = store.getId
+//   if (!(to.name === 'login' || to.name === 'register') && id === 0) {
+//     next({ name: 'login' })
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

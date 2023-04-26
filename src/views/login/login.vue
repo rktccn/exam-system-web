@@ -22,7 +22,7 @@
             <n-input v-model:value='model.user.idOrEmail' placeholder='输入编号/邮箱' />
           </n-form-item>
           <n-form-item path='user.password'>
-            <n-input v-model:value='model.user.password' placeholder='输入密码' />
+            <n-input v-model:value='model.user.password' placeholder='输入密码' type='password' />
           </n-form-item>
 
           <n-form-item>
@@ -37,14 +37,11 @@
         </n-button>
       </div>
     </div>
-
   </div>
-
-
 </template>
 
 <script>
-import { NForm, NFormItem, NInput, NButton, NGradientText } from 'naive-ui'
+import { NForm, NFormItem, NInput, NButton, useMessage } from 'naive-ui'
 import { ref } from 'vue'
 import { login } from '../../apis/user.js'
 import { useRouter } from 'vue-router'
@@ -60,9 +57,9 @@ export default {
       }
     })
     const router = useRouter()
+    const message = useMessage()
 
     const goToRegister = () => {
-      console.log('跳转到注册页面')
       router.push('/register')
     }
 
@@ -87,8 +84,6 @@ export default {
       handleValidateClick(e) {
         e.preventDefault()
         formRef.value?.validate().then(() => {
-          console.log('success')
-
           const idOrEmail = modelRef.value.user.idOrEmail
           const password = modelRef.value.user.password
           // // 判定是工号还是邮箱
@@ -98,9 +93,13 @@ export default {
 
 
           login(no, email, password).then(res => {
-            console.log(res)
-          }).catch(() => {
-            console.log('登录失败')
+            if (res.code === 200) {
+              message.success(`${res.data.name}，欢迎回来！`)
+            } else {
+              message.error(res.message)
+            }
+          }).catch((res) => {
+            message.error(res.message)
           })
 
         }).catch(() => {

@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { NForm, NFormItem, NInput, NButton } from 'naive-ui'
+import { NForm, NFormItem, NInput, NButton, useMessage } from 'naive-ui'
 import { ref } from 'vue'
 import { register } from '../../apis/user.js'
 
@@ -77,7 +77,7 @@ export default {
         password: ''
       }
     })
-
+    const message = useMessage()
 
     return {
       formRef,
@@ -114,17 +114,17 @@ export default {
       handleValidateClick(e) {
         e.preventDefault()
         formRef.value?.validate().then(() => {
-          console.log('success')
-
           const { name, age, id: no, email, password } = modelRef.value.user
 
           register(no, password, email, name, age).then((res) => {
-            console.log(res)
+            if (res.code === 200) {
+              message.success('注册成功', { duration: 2000 })
+            } else {
+              message.error('注册失败', { duration: 2000 })
+            }
           }).catch(() => {
             console.log('error')
           })
-
-
         }).catch(() => {
           console.log('error')
         })
