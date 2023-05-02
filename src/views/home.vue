@@ -1,25 +1,19 @@
 <template>
   <div class='home'>
     <div class='left'>
-      <span class='title'>在线考试平台</span>
-      <nav class='nav'>
-        <p class='nav-item'>首页</p>
-        <p class='nav-item'>首页</p>
-        <p class='nav-item'>首页</p>
-        <p class='nav-item'>首页</p>
-        <p class='nav-item'>首页</p>
-        <p class='nav-item'>首页</p>
-      </nav>
+      <side-bar></side-bar>
     </div>
     <div class='right'>
       <main class='main'>
-        1
+        <router-view></router-view>
       </main>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { RouterView } from 'vue-router'
+import sideBar from '../components/sideBar.vue'
 </script>
 
 <style lang='scss' scoped>
@@ -27,14 +21,13 @@
 .home {
   display: flex;
   flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 
   .left {
-    position: relative;
-    width: 18vw;
-    height: 100vh;
-    padding-top: 8%;
-    border-radius: 25px;
-    background-color: rgba(127, 198, 216, 0.3);
+    width: 14%;
+    height: 100%;
   }
 
   .right {
@@ -43,31 +36,11 @@
     background-color: #fff;
   }
 
-  .title {
-    position: absolute;
-    top: 20px;
-    left: 30px;
-    font-size: 28px;
-    font-weight: bolder;
-    // 调整文字间距
-    letter-spacing: 5px;
-  }
-
-  .nav {
-    padding-left: 16%;
-    padding-right: 16%;
-
-    .nav-item {
-      margin-bottom: 20px;
-      padding: 10px 0;
-      font-size: 20px;
-      font-weight: bolder;
-      cursor: pointer;
-    }
-  }
 
   .main {
     padding: 30px 50px;
+    overflow: scroll;
+    height: 100%;
   }
 
 

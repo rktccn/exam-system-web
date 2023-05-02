@@ -4,8 +4,44 @@ import { useStore } from '../store/main'
 const routes = [
   {
     path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
     name: 'index',
-    component: () => import('../views/home.vue')
+    component: () => import('../views/home.vue'),
+    children: [
+      {
+        path: 'myExam',
+        name: 'myExam',
+        component: () => import('../views/home/myExam.vue')
+      },
+      {
+        path: 'grade',
+        name: 'grade',
+        component: () => import('../views/home/grade.vue')
+      },
+      {
+        path: 'userSetting',
+        name: 'userSetting',
+        component: () => import('../views/home/userSetting.vue')
+      },
+      {
+        path: 'examSetting',
+        name: 'examSetting',
+        component: () => import('../views/home/examSetting.vue')
+      },
+      {
+        path: 'questionBank',
+        name: 'questionBank',
+        component: () => import('../views/home/questionBank.vue')
+      },
+      {
+        path: 'systemSetting',
+        name: 'systemSetting',
+        component: () => import('../views/home/systemSetting.vue')
+      }
+    ]
   },
   {
     path: '/login',

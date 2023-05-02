@@ -7,6 +7,7 @@
 
 <script setup>
 import { NMessageProvider } from 'naive-ui'
+
 </script>
 
 <style></style>
