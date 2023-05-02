@@ -32,16 +32,24 @@
         <n-select v-model:value='questionValue.type' :options='typeOptions' />
 
         <p>题目</p>
-        <n-input></n-input>
+        <n-input v-model:value='questionValue.question'></n-input>
+
+        <p>分值</p>
+        <n-input-number v-model:value='questionValue.score' clearable />
+
 
         <!--只有选择题才有选项，并且可以通过按钮增加选项条数-->
-        <p v-if='questionValue.type === "选择题"'>选项</p>
-        <div class='option' v-if='questionValue.type === "选择题"'
+        <p v-if='questionValue.type <= 1'>选项</p>
+        <div class='option' v-if='questionValue.type <=1'
              v-for='(item, index) in questionValue.options'
              :key='index'>
           <n-space>
-            <n-checkbox value='Beijing' :label='item' />
-            <n-input />
+            <n-checkbox :value='index' :label='(index+1).toString()'
+                        v-model:checked='item.isAnswer' />
+            <n-input v-model:value='item.context' />
+            <n-button type='warning' @click='deleteOption(index)'>
+              删除选项
+            </n-button>
           </n-space>
         </div>
         <n-button type='info' @click='addOption'>
@@ -49,9 +57,27 @@
         </n-button>
 
 
-        <n-button type='info' @click='showModal = false'>
-          确定
-        </n-button>
+        <!--答案-->
+        <p>答案</p>
+        <!--选择题答案-->
+        <div v-if='questionValue.type <= 1'>
+          <template v-for='(item,index) in questionValue.options'>
+            <span v-if='item.isAnswer'>{{ index + 1 }}&nbsp;</span>
+          </template>
+        </div>
+        <!--填空题答案-->
+        <div v-else-if='questionValue.type > 1'>
+          <n-input v-model:value='questionValue.answer'></n-input>
+        </div>
+
+        <n-space justify='space-between'>
+          <n-button type='info' @click='showModal = false'>
+            确定
+          </n-button>
+          <n-button type='info' @click='showModal = false'>
+            取消
+          </n-button>
+        </n-space>
       </n-card>
     </n-modal>
 
@@ -61,30 +87,39 @@
 </template>
 
 <script setup>
-import { NButton, NGradientText, NModal, NCard, NInput, NSelect, NCheckbox, NSpace } from 'naive-ui'
+import { NButton, NGradientText, NModal, NCard, NInput, NSelect, NCheckbox, NSpace, NInputNumber } from 'naive-ui'
 import QuestionBlock from '../../components/questionBlock.vue'
 import { ref } from 'vue'
 
 const showModal = ref(false)
 
 const questionValue = ref({
-  type: '选择题',
-  question: '这是一个选择题',
-  options: ['选项1', '选项2', '选项3', '选项4'],
-  answer: '选项1',
-  analysis: '这是一个选择题的解析'
+  type: 0,
+  question: '',
+  score: 0,
+  options: [
+    { context: '', isAnswer: false },
+    { context: '', isAnswer: false },
+    { context: '', isAnswer: false },
+    { context: '', isAnswer: false }
+  ],
+  answer: ''
 })
 
 const typeOptions = [
-  { label: '单选题', value: '0' },
-  { label: '多选题', value: '1' },
-  { label: '填空题', value: '2' },
-  { label: '判断题', value: '3' },
-  { label: '简答题', value: '4' }
+  { label: '单选题', value: 0 },
+  { label: '多选题', value: 1 },
+  { label: '填空题', value: 2 },
+  { label: '判断题', value: 3 },
+  { label: '简答题', value: 4 }
 ]
 
 const addOption = () => {
-  questionValue.value.options.push('选项' + (questionValue.value.options.length + 1))
+  questionValue.value.options.push({ context: '选项', isAnswer: false })
+}
+
+const deleteOption = (index) => {
+  questionValue.value.options.splice(index, 1)
 }
 
 </script>

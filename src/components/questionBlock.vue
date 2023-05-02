@@ -12,11 +12,9 @@
       <p>C. 企业的生产经营活动是在一定的生产条件下进行的</p>
       <p>D. 企业的生产经营活动是在一定的生产条件下进行的</p>
 
-
-      <template #footer>
+      <template #action>
         <span>参考答案：C</span>
       </template>
-
     </n-card>
 
   </div>

@@ -27,3 +27,46 @@ export function register(no, password, email, name, age) {
     }
   })
 }
+
+
+// 获取用户列表
+export function getAllUser(res) {
+
+  return http({
+    url: '/role/all',
+    method: 'get',
+    params: {
+      limit: res?.limit | 10,
+      offset: res?.offset | 0,
+      permission: res?.permission
+    }
+  })
+}
+
+// 获取用户数量
+export function getUserCount(permission) {
+  return http({
+    url: '/user/count',
+    method: 'get',
+    params: {
+      permission
+    }
+  })
+}
+
+// 更新用户信息
+export function updateUser(id, no, email, name, age, password, permission) {
+  return http({
+    url: '/user/update',
+    method: 'post',
+    data: {
+      id,
+      no,
+      email,
+      name,
+      age,
+      password,
+      permission
+    }
+  })
+}
