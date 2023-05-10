@@ -73,19 +73,6 @@ const clickNav = (path) => {
   height: 100%;
   padding-top: 75px;
   border-radius: 25px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: 0px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    width: 3px;
-    height: 90%;
-    border-radius: 20px;
-    background-color: #fff;
-  }
 }
 
 .title {

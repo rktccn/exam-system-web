@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <n-card title='阶段测试1'>
+  <div class="main">
+    <n-card title="阶段测试1">
       开始时间：2021-10-1 12:00:00
-      <br>
+      <br />
       结束时间：2021-10-1 12:00:00
 
-      <template #action>
-        完成人数:0/30
-      </template>
+      <template #action> 完成人数:0/30 </template>
     </n-card>
   </div>
 </template>
 
 <script setup>
-import { NCard } from 'naive-ui'
-
-
+import { NCard } from 'naive-ui';
 </script>
 
-<style lang='scss' scoped></style>
+<style lang="scss" scoped>
+.main {
+  border-radius: 16px;
+  overflow: hidden;
+}
+</style>

@@ -25,8 +25,22 @@ import sideBar from '../components/sideBar.vue';
   overflow: hidden;
 
   .left {
+    position: relative;
     width: 14%;
     height: 100%;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      width: 3px;
+      height: 90%;
+      border-radius: 20px;
+      background-color: #fff;
+    }
   }
 
   .right {
