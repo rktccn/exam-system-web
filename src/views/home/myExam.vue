@@ -1,12 +1,103 @@
 <template>
-
   <div>
-    我的考试
-  </div>
+    <n-gradient-text type="info" class="title"> 我的考试 </n-gradient-text>
+    <main>
+      <n-divider title-placement="left" class="subtitle">
+        活跃的考试
+      </n-divider>
 
+      <n-grid x-gap="12" :cols="4" :y-gap="8">
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+      </n-grid>
+
+      <n-divider title-placement="left" class="subtitle">
+        已结束的考试
+      </n-divider>
+
+      <n-grid x-gap="12" :cols="4" :y-gap="8">
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+        <n-gi>
+          <exam-card />
+        </n-gi>
+      </n-grid>
+    </main>
+  </div>
 </template>
 
-<script>
+<script setup>
+import { NDivider, NGradientText, NButton, NGrid, NGi } from 'naive-ui';
+import examCard from '../../components/examCard.vue';
 </script>
 
-<style lang='scss' scoped></style>
+<style lang="scss" scoped>
+main {
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+
+  nav {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.title {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-weight: 600;
+  opacity: 0.6;
+}
+</style>

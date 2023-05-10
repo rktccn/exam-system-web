@@ -1,21 +1,17 @@
 <template>
   <div>
-    <n-gradient-text type='info' class='title'>
-      考试管理
-    </n-gradient-text>
+    <n-gradient-text type="info" class="title"> 考试管理 </n-gradient-text>
 
     <main>
       <nav>
-        <n-button type='info'>
-          创建新考试
-        </n-button>
+        <n-button type="info"> 创建新考试 </n-button>
       </nav>
 
-      <n-divider title-placement='left' class='subtitle'>
+      <n-divider title-placement="left" class="subtitle">
         活跃的考试
       </n-divider>
 
-      <n-grid x-gap='12' :cols='4' :y-gap="8">
+      <n-grid x-gap="12" :cols="4" :y-gap="8">
         <n-gi>
           <exam-card />
         </n-gi>
@@ -51,7 +47,7 @@
         </n-gi>
       </n-grid>
 
-      <n-divider title-placement='left' class='subtitle'>
+      <n-divider title-placement="left" class="subtitle">
         已结束的考试
       </n-divider>
     </main>
@@ -59,14 +55,11 @@
 </template>
 
 <script setup>
-import { NDivider, NGradientText, NButton, NGrid, NGi } from 'naive-ui'
-import examCard from '../../components/examCard.vue'
-
-
+import { NDivider, NGradientText, NButton, NGrid, NGi } from 'naive-ui';
+import examCard from '../../components/examCard.vue';
 </script>
 
-<style lang='scss' scoped>
-
+<style lang="scss" scoped>
 main {
   margin-top: 20px;
   margin-left: 20px;
@@ -91,5 +84,4 @@ main {
   font-weight: 600;
   opacity: 0.6;
 }
-
 </style>

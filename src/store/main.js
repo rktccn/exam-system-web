@@ -1,29 +1,29 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useStore = defineStore('main', {
   state: () => {
     return {
       id: 0,
-      permission: 0,
-      name: ''
-    }
+      permission: 1,
+      name: '',
+    };
   },
   getters: {
     getId() {
-      return this.id
+      return this.id;
     },
     getPermission() {
-      return this.permission
+      return this.permission;
     },
     getName() {
-      return this.name
-    }
+      return this.name;
+    },
   },
   actions: {
     // 设置用户id
     // @param: {Int} id
     setId(id) {
-      this.id = id
-    }
-  }
-})
+      this.id = id;
+    },
+  },
+});

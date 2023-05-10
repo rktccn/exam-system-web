@@ -1,10 +1,14 @@
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-import { useStore } from '../store/main'
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from 'vue-router';
+import { useStore } from '../store/main';
 
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/home',
   },
   {
     path: '/home',
@@ -14,51 +18,56 @@ const routes = [
       {
         path: 'myExam',
         name: 'myExam',
-        component: () => import('../views/home/myExam.vue')
+        component: () => import('../views/home/myExam.vue'),
       },
       {
         path: 'grade',
         name: 'grade',
-        component: () => import('../views/home/grade.vue')
+        component: () => import('../views/home/grade.vue'),
       },
       {
         path: 'userSetting',
         name: 'userSetting',
-        component: () => import('../views/home/userSetting.vue')
+        component: () => import('../views/home/userSetting.vue'),
       },
       {
         path: 'examSetting',
         name: 'examSetting',
-        component: () => import('../views/home/examSetting.vue')
+        component: () => import('../views/home/examSetting.vue'),
       },
       {
         path: 'questionBank',
         name: 'questionBank',
-        component: () => import('../views/home/questionBank.vue')
+        component: () => import('../views/home/questionBank.vue'),
       },
       {
         path: 'systemSetting',
         name: 'systemSetting',
-        component: () => import('../views/home/systemSetting.vue')
-      }
-    ]
+        component: () => import('../views/home/systemSetting.vue'),
+      },
+    ],
+  },
+  {
+    path: '/exam/:id',
+    name: 'exam',
+    component: () => import('../views/exam.vue'),
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/login/login.vue')
+    component: () => import('../views/login/login.vue'),
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import('../views/login/register.vue')
-  }
-]
+    component: () => import('../views/login/register.vue'),
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes
-})
+  routes: routes,
+});
 
 // router.beforeEach((to, from, next) => {
 //   const store = useStore()
@@ -70,4 +79,4 @@ const router = createRouter({
 //   }
 // })
 
-export default router
+export default router;
