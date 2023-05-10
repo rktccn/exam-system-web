@@ -1,19 +1,10 @@
 <template>
-<<<<<<< Updated upstream
-  <div class="question-block">
-    <n-card title="根据上述资料，以下说法中不正确的是（）" size="large">
-      <template #header-extra>
-        <span class="subtitle">
-          <n-tag :bordered="false" type="info"> 单选题 </n-tag>
-=======
   <div>
-
     <n-card :title='questionValue.content' size='large'>
       <template #header-extra>
-        <span class='subtitle'>
+        <n-tag class='subtitle'>
           {{ typeOptions[questionValue.type].label }}
->>>>>>> Stashed changes
-        </span>
+        </n-tag>
       </template>
 
       <!--选项-->
@@ -42,10 +33,8 @@
 </template>
 
 <script setup>
-<<<<<<< Updated upstream
-import { NCard, NTag } from 'naive-ui';
-=======
-import { NCard } from 'naive-ui'
+
+import { NCard, NTag } from 'naive-ui'
 
 // 从父组件接收的数据
 const props = defineProps({
@@ -79,10 +68,9 @@ const typeOptions = [
 
 console.log(props.questionValue)
 
->>>>>>> Stashed changes
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .question-block {
   border-radius: 25px;
   overflow: hidden;
@@ -95,8 +83,5 @@ console.log(props.questionValue)
   opacity: 0.6;
   color: #2080f0;
 }
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 </style>
