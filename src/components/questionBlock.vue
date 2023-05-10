@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="question-block">
     <n-card title="根据上述资料，以下说法中不正确的是（）" size="large">
       <template #header-extra>
         <span class="subtitle">
@@ -23,6 +23,11 @@ import { NCard, NTag } from 'naive-ui';
 </script>
 
 <style lang="scss" scoped>
+.question-block {
+  border-radius: 25px;
+  overflow: hidden;
+}
+
 .subtitle {
   margin-top: 20px;
   margin-left: 20px;

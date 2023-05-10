@@ -65,7 +65,9 @@
           placeholder="输入答案"
         />
 
-        <n-button type="info" @click="submitAnswer"> 提交答案 </n-button>
+        <n-button type="info" class="submit" @click="submitAnswer">
+          提交答案
+        </n-button>
       </template>
     </n-card>
   </div>
@@ -170,5 +172,9 @@ const submitAnswer = () => {
       transform: translate(-50%, -50%);
     }
   }
+}
+
+.submit {
+  margin-top: 15px;
 }
 </style>

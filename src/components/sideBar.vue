@@ -1,88 +1,92 @@
 <template>
-  <div class='side-bar'>
-    <span class='title'>在线考试平台</span>
-    <nav class='nav'>
-      <template v-for='item in sideBarContent'>
-        <p class='nav-item' v-if='item.permission.includes(userPermission)'
-           @click='clickNav(item.pathName)'
-        >{{ item.name }}</p>
+  <div class="side-bar">
+    <span class="title">在线考试平台</span>
+    <nav class="nav">
+      <template v-for="item in sideBarContent">
+        <p
+          class="nav-item"
+          v-if="item.permission.includes(userPermission)"
+          @click="clickNav(item.pathName)"
+        >
+          {{ item.name }}
+        </p>
       </template>
 
-
-      <p class='nav-item'>{{ userPermission }}</p>
-
+      <p class="nav-item">{{ userPermission }}</p>
     </nav>
   </div>
-
-
 </template>
 
-
 <script setup>
-import { useStore } from '../store/main.js'
-import { useRouter } from 'vue-router'
+import { useStore } from '../store/main.js';
+import { useRouter } from 'vue-router';
 
-const store = useStore()
-const router = useRouter()
+const store = useStore();
+const router = useRouter();
 
-const userPermission = store.getPermission
-
+const userPermission = store.getPermission;
 
 const sideBarContent = [
   {
     name: '我的考试',
     pathName: 'myExam',
-    permission: [1, 2]
+    permission: [1, 2],
   },
   {
     name: '成绩管理',
     pathName: 'grade',
-    permission: [1, 2]
+    permission: [1, 2],
   },
   {
     name: '个人设置',
     pathName: 'userSetting',
-    permission: [0, 1, 2]
+    permission: [0, 1, 2],
   },
   {
     name: '考试管理',
     pathName: 'examSetting',
-    permission: [0, 1]
+    permission: [0, 1],
   },
 
   {
     name: '题库管理',
     pathName: 'questionBank',
-    permission: [0, 1]
+    permission: [0, 1],
   },
 
   {
     name: '系统管理',
     pathName: 'systemSetting',
-    permission: [0]
-  }
-]
-
+    permission: [0],
+  },
+];
 
 const clickNav = (path) => {
-  router.push({ name: path })
-}
-
-
+  router.push({ name: path });
+};
 </script>
 
-
-<style lang='scss' scoped>
-
+<style lang="scss" scoped>
 .side-bar {
   position: relative;
   width: 100%;
   height: 100%;
   padding-top: 75px;
   border-radius: 25px;
-  background-color: rgba(127, 198, 216, 0.3);
-}
 
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 3px;
+    height: 90%;
+    border-radius: 20px;
+    background-color: #fff;
+  }
+}
 
 .title {
   position: absolute;
@@ -95,8 +99,6 @@ const clickNav = (path) => {
 }
 
 .nav {
-
-
   .nav-item {
     margin-bottom: 20px;
     font-size: 18px;
@@ -110,5 +112,4 @@ const clickNav = (path) => {
     }
   }
 }
-
 </style>

@@ -32,7 +32,6 @@ import sideBar from '../components/sideBar.vue';
   .right {
     flex-grow: 1;
     height: 100vh;
-    background-color: #fff;
   }
 
   .main {
