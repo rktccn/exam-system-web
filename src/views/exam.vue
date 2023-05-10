@@ -39,7 +39,10 @@
       </nav>
     </div>
     <div class="right">
-      <exam-question-card class="question-card"></exam-question-card>
+      <exam-question-card
+        class="question-card"
+        @sendAnswer="getAnswer"
+      ></exam-question-card>
       <exam-question-card class="question-card"></exam-question-card>
       <exam-question-card class="question-card"></exam-question-card>
       <exam-question-card class="question-card"></exam-question-card>
@@ -53,6 +56,12 @@ import { ref } from 'vue';
 import examQuestionCard from '../components/examQuestionCard.vue';
 
 const percentage = ref(20);
+
+const options = ref();
+
+const getAnswer = (val) => {
+  options.value = val;
+};
 </script>
 
 <style lang="scss" scoped>

@@ -64,14 +64,18 @@
           type="text"
           placeholder="输入答案"
         />
+
+        <n-button type="info" @click="submitAnswer"> 提交答案 </n-button>
       </template>
     </n-card>
   </div>
 </template>
 
 <script setup>
-import { NCard, NTag, NInput } from 'naive-ui';
+import { NCard, NTag, NInput, NButton } from 'naive-ui';
 import { ref } from 'vue';
+
+const emit = defineEmits(['sendAnswer']);
 
 const typeOptions = [
   { label: '单选题', value: 0 },
@@ -110,6 +114,10 @@ const questionValue = ref({
 const alterSelect = (index) => {
   questionValue.value.options[index].isSelected =
     !questionValue.value.options[index].isSelected;
+};
+
+const submitAnswer = () => {
+  emit('sendAnswer', questionValue.value.options);
 };
 </script>
 
