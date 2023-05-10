@@ -4,7 +4,7 @@
 
     <main>
       <nav>
-        <n-button type="info" @click="showModal = true"> 添加题目 </n-button>
+        <n-button type="info" @click="showModal = true">添加题目</n-button>
       </nav>
 
       <div>
