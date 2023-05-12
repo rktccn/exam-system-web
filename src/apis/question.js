@@ -14,6 +14,7 @@ import http from '../utils/http.js'
 //     }
 // }
 export const addQuestion = (data) => {
+  console.log('data', data)
   return http({
     url: '/question/add',
     method: 'post',
@@ -22,13 +23,10 @@ export const addQuestion = (data) => {
 }
 
 // 获取题目列表及答案
-export const getQuestionList = (teacherId) => {
+export const getQuestionList = () => {
   return http({
     url: '/question/list',
     method: 'get',
-    params: {
-      teacherId
-    }
   })
 }
 
@@ -46,6 +44,7 @@ export const getQuestionList = (teacherId) => {
 //     }
 // }
 export const updateQuestion = (data) => {
+
   return http({
     url: '/question/update',
     method: 'post',

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <n-card :title='questionValue.content' size='large'>
+  <div class='question-block' @click='alterQuestion'>
+    <n-card :title='`${questionValue.id}:&nbsp;${questionValue.content}`' size='large'>
       <template #header-extra>
         <n-tag class='subtitle'>
           {{ typeOptions[questionValue.type].label }}
@@ -10,7 +10,7 @@
       <!--选项-->
       <template v-if='questionValue.type <= 1'>
         <p v-for='(item, index) in questionValue.options' :key='index'>
-          {{ `${index + 1}. ${item.content}` }}
+          {{ `${String.fromCharCode(65 + index)}.&nbsp;${item.content}` }}
         </p>
       </template>
 
@@ -19,13 +19,19 @@
         <span v-if='questionValue.type <= 1'>
           参考答案：
           <template v-for='(item,index) in questionValue.options'>
-            <span v-if='item.isCorrect'>{{ index + 1 }}&nbsp;</span>
+            <span v-if='item.isCorrect'>{{ String.fromCharCode(65 + index) }}&nbsp;</span>
           </template>
         </span>
 
-        <span v-else-if='questionValue.type > 1'>
-          参考答案：{{ questionValue.options[0].content }}
-        </span>
+        <div v-else-if='questionValue.type === 3'>
+          <template v-for='(item,index) in questionValue.options' :key='index'>
+            <span v-if='item.isCorrect'> 参考答案：{{ item.content }}  </span>
+          </template>
+        </div>
+
+        <div v-else>
+          <span> 参考答案：{{ questionValue.options[0].content }} </span>
+        </div>
 
       </template>
     </n-card>
@@ -42,6 +48,7 @@ const props = defineProps({
     type: Object,
     default: () => {
       return {
+        id: 0,
         type: 0,
         content: '',
         score: 0,
@@ -65,6 +72,53 @@ const typeOptions = [
   { label: '简答题', value: 4 }
 ]
 
+const emit = defineEmits(['sendQuestionValue'])
+
+const alterQuestion = () => {
+
+  let val = props.questionValue
+  let result
+
+  if (val.type <= 1) {
+    result = {
+      questionId: val.id,
+      type: val.type,
+      content: val.content,
+      score: val.score,
+      teacherId: val.teacherId,
+      options: val.options,
+      judgeOption: false,
+      answer: ''
+    }
+  } else if (val.type === 3) {
+    let judgeOption = val.options[0].content === '正确' ? val.options[0].isCorrect : !val.options[0].isCorrect
+    result = {
+      questionId: val.id,
+      type: val.type,
+      content: val.content,
+      score: val.score,
+      teacherId: val.teacherId,
+      options: [],
+      judgeOption: judgeOption,
+      answer: ''
+    }
+  } else {
+    result = {
+      questionId: val.id,
+      type: val.type,
+      content: val.content,
+      score: val.score,
+      teacherId: val.teacherId,
+      options: [],
+      judgeOption: false,
+      answer: val.options[0].content
+    }
+  }
+
+
+  emit('sendQuestionValue', result)
+}
+
 
 console.log(props.questionValue)
 
@@ -74,6 +128,7 @@ console.log(props.questionValue)
 .question-block {
   border-radius: 25px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .subtitle {

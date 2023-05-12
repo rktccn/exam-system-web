@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
-    <div class="left">
+  <div class='home'>
+    <div class='left'>
       <side-bar></side-bar>
     </div>
-    <div class="right">
-      <main class="main">
+    <div class='right'>
+      <main class='main'>
         <router-view></router-view>
       </main>
     </div>
@@ -12,11 +12,11 @@
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router';
-import sideBar from '../components/sideBar.vue';
+import { RouterView } from 'vue-router'
+import SideBar from '../components/sideBar.vue'
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .home {
   display: flex;
   flex-direction: row;
@@ -28,11 +28,13 @@ import sideBar from '../components/sideBar.vue';
     position: relative;
     width: 14%;
     height: 100%;
+    background-color: #fff;
+    border-radius: 0 25px 25px 0;
 
     &::after {
       content: '';
       position: absolute;
-      right: 0px;
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
 

@@ -79,7 +79,7 @@ const clickNav = (path) => {
   position: absolute;
   top: 20px;
   left: 30px;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bolder;
   // 调整文字间距
   letter-spacing: 5px;

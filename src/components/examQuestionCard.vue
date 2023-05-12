@@ -109,7 +109,7 @@ const questionValue = ref({
       isSelected: false,
     },
   ],
-  judgeOptions: null,
+  judgeOption: null,
   answer: '',
 });
 
@@ -139,7 +139,7 @@ const submitAnswer = () => {
 
   &.selected {
     .option-tag {
-      background-color: #127fa7b0;
+      background-color: rgba(32, 128, 240, 0.71);
       color: #fff;
     }
   }
@@ -148,7 +148,7 @@ const submitAnswer = () => {
     cursor: pointer;
 
     .option-tag {
-      background-color: #12617e;
+      background-color: #2080F0;
       color: #fff;
     }
   }
@@ -160,7 +160,7 @@ const submitAnswer = () => {
     height: 25px;
     margin-right: 8px;
     border-radius: 50%;
-    border: 2px solid #12617e;
+    border: 2px solid #2080F0;
 
     text-align: center;
     transition: all 0.15s;
