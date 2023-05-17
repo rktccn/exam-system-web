@@ -1,6 +1,9 @@
 <template>
   <div>
-    <n-card title="根据上述资料，以下说法中不正确的是（）" size="large">
+    <n-card
+      :title="`${qindex + 1}&nbsp;${questionValue.question}`"
+      size="large"
+    >
       <template #header-extra>
         <span class="subtitle">
           <n-tag :bordered="false" type="info">
@@ -50,20 +53,22 @@
       </template>
 
       <template #action>
-        <!--选择题答案-->
-        <div v-if="questionValue.type <= 1">
+        <!--选择题，判断题答案-->
+        <template v-if="(questionValue.type <= 1) | (questionValue.type === 3)">
           <template v-for="(item, index) in questionValue.options">
             <span v-if="item.isSelected"
               >{{ String.fromCharCode(65 + index) }}&nbsp;</span
             >
           </template>
-        </div>
+        </template>
 
-        <n-input
-          v-model:value="questionValue.answer"
-          type="text"
-          placeholder="输入答案"
-        />
+        <template v-else>
+          <n-input
+            v-model:value="questionValue.answer"
+            type="text"
+            placeholder="输入答案"
+          />
+        </template>
 
         <n-button type="info" class="submit" @click="submitAnswer">
           提交答案
@@ -76,6 +81,13 @@
 <script setup>
 import { NCard, NTag, NInput, NButton } from 'naive-ui';
 import { ref } from 'vue';
+
+const props = defineProps({
+  qindex: {
+    type: Number,
+    default: 0,
+  },
+});
 
 const emit = defineEmits(['sendAnswer']);
 
@@ -119,7 +131,7 @@ const alterSelect = (index) => {
 };
 
 const submitAnswer = () => {
-  emit('sendAnswer', questionValue.value.options);
+  emit('sendAnswer', { id: props.qindex, ...questionValue.value });
 };
 </script>
 
@@ -148,7 +160,7 @@ const submitAnswer = () => {
     cursor: pointer;
 
     .option-tag {
-      background-color: #2080F0;
+      background-color: #2080f0;
       color: #fff;
     }
   }
@@ -160,7 +172,7 @@ const submitAnswer = () => {
     height: 25px;
     margin-right: 8px;
     border-radius: 50%;
-    border: 2px solid #2080F0;
+    border: 2px solid #2080f0;
 
     text-align: center;
     transition: all 0.15s;

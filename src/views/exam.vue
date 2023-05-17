@@ -1,71 +1,85 @@
 <template>
   <main>
-    <div class='left'>
+    <div class="left">
       <nav>
-        <n-progress type='circle' :percentage='percentage' />
+        <n-progress type="circle" :percentage="percentage" />
 
-        <n-grid x-gap='12' :cols='4' :y-gap='8' class='nav-list'>
-          <n-gi>
-            <div class='nav-item'>
-              <span class='question-id'>1</span>
-            </div>
-          </n-gi>
-          <n-gi>
-            <div class='nav-item'>
-              <span class='question-id'>1</span>
-            </div>
-          </n-gi>
-          <n-gi>
-            <div class='nav-item'>
-              <span class='question-id'>1</span>
-            </div>
-          </n-gi>
-          <n-gi>
-            <div class='nav-item'>
-              <span class='question-id'>1</span>
-            </div>
-          </n-gi>
-          <n-gi>
-            <div class='nav-item'>
-              <span class='question-id'>1</span>
-            </div>
-          </n-gi>
-          <n-gi>
-            <div class='nav-item'>
-              <span class='question-id'>1</span>
-            </div>
+        <n-grid x-gap="12" :cols="4" :y-gap="8" class="nav-list">
+          <n-gi v-for="(item, index) in len">
+            <a
+              class="nav-item"
+              :class="{ done: options[item] !== null }"
+              @click="scrollToQuestion(index)"
+            >
+              <span class="question-id">{{ index + 1 }}</span>
+            </a>
           </n-gi>
         </n-grid>
-        <n-button class='submit' type='info'>提交试卷</n-button>
+
+        <n-popconfirm :negative-text="null" @positive-click="submitExam">
+          <template #trigger>
+            <n-button class="submit" type="info">提交试卷</n-button>
+          </template>
+          提交后无法修改，确认提交
+        </n-popconfirm>
       </nav>
     </div>
-    <div class='right'>
+    <div class="right" ref="questionListRef">
       <exam-question-card
-        class='question-card'
-        @sendAnswer='getAnswer'
+        class="question-card"
+        v-for="(item, index) in len"
+        :qindex="index"
+        :q-index="index"
+        @sendAnswer="getAnswer"
       ></exam-question-card>
-      <exam-question-card class='question-card'></exam-question-card>
-      <exam-question-card class='question-card'></exam-question-card>
-      <exam-question-card class='question-card'></exam-question-card>
     </div>
   </main>
 </template>
 
 <script setup>
-import { NGrid, NGi, NProgress, NButton } from 'naive-ui'
-import { ref } from 'vue'
-import ExamQuestionCard from '../components/examQuestionCard.vue'
+import { NGrid, NGi, NProgress, NButton, NPopconfirm } from 'naive-ui';
+import { ref, computed } from 'vue';
+import ExamQuestionCard from '../components/examQuestionCard.vue';
 
-const percentage = ref(20)
+const questionListRef = ref(null);
+const len = ref([]);
+const showPop = ref(false);
 
-const options = ref()
+const percentage = computed(() => {
+  return parseInt(
+    (options.value.reduce((pre, cur) => {
+      if (cur !== null) return pre + 1;
+      return pre;
+    }, 0) /
+      options.value.length) *
+      100
+  );
+});
+
+const options = ref([]);
+
+for (let i = 0; i < 3; i++) {
+  len.value.push(i);
+  options.value.push(null);
+}
 
 const getAnswer = (val) => {
-  options.value = val
-}
+  options.value[val.id] = val;
+};
+
+const scrollToQuestion = (index) => {
+  questionListRef.value.children[index].scrollIntoView({
+    block: 'start',
+    behavior: 'smooth',
+  });
+};
+
+const submitExam = () => {
+  // TODO: 提交试卷
+};
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 main {
   display: flex;
   flex-direction: row;
@@ -89,7 +103,7 @@ main {
       height: 90%;
 
       transform: translateY(-50%);
-      background-color: #2080F0;
+      background-color: #2080f0;
     }
 
     nav {
@@ -110,10 +124,15 @@ main {
       width: 25px;
       height: 25px;
       border-radius: 50%;
-      border: 2px solid #2080F0;
+      border: 2px solid #2080f0;
 
       text-align: center;
       transition: all 0.15s;
+
+      &.done {
+        background-color: rgba(32, 128, 240, 0.71);
+        color: #fff;
+      }
 
       .question-id {
         position: absolute;
@@ -123,7 +142,7 @@ main {
       }
 
       &:hover {
-        background-color: #2080F0;
+        background-color: #2080f0;
         color: #fff;
         cursor: pointer;
       }
@@ -137,13 +156,13 @@ main {
   .right {
     flex-grow: 1;
     height: 100vh;
-    padding: 20px 45px;
-    overflow: scroll;
+    padding: 0px 45px;
+    overflow-y: scroll;
 
     .question-card {
       border-radius: 25px;
       overflow: hidden;
-      margin-bottom: 25px;
+      margin-top: 25px;
     }
   }
 }
