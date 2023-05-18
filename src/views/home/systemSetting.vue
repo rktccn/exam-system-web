@@ -164,7 +164,7 @@ const dataValue = ref({
 })
 const userValue = ref({
   info: {
-    id: 0,
+    userId: 0,
     username: '',
     email: '',
     age: '',
@@ -174,7 +174,7 @@ const userValue = ref({
   permission: 0
 })
 const teacherLink = ref({
-  id: 0,
+  userId: 0,
   name: '',
   list: []
 })
@@ -209,7 +209,7 @@ getAllUser({ permission: 2 }).then(res => {
   res.rows.map(val => {
     studentList.value.push({
       label: `${val.no}_${val.name}`,
-      value: val.id
+      value: val.userId
     })
   })
 })
@@ -220,14 +220,14 @@ const editUser = (item) => {
   userValue.value.info.age = item.age.toString()
   userValue.value.password = ''
   userValue.value.permission = item.permission
-  userValue.value.info.id = item.id
+  userValue.value.info.UserId = item.UserId
   userValue.value.info.no = item.no
 
   userManage.value = true
 }
 
 const editLink = (item) => {
-  teacherLink.value.id = item.id
+  teacherLink.value.UserId = item.UserId
   teacherLink.value.name = item.name
 
   linkManage.value = true
@@ -235,7 +235,7 @@ const editLink = (item) => {
 
 const submitUpdate = () => {
   updateUser(
-    userValue.value.info.id,
+    userValue.value.info.UserId,
     userValue.value.info.no,
     userValue.value.info.email,
     userValue.value.info.username,

@@ -1,6 +1,6 @@
 <template>
   <div class='question-block' @click='alterQuestion'>
-    <n-card :title='`${questionValue.id}:&nbsp;${questionValue.content}`' size='large'>
+    <n-card :title='`${questionValue.questionId}:&nbsp;${questionValue.content}`' size='large'>
       <template #header-extra>
         <n-tag class='subtitle'>
           {{ typeOptions[questionValue.type].label }}
@@ -48,7 +48,7 @@ const props = defineProps({
     type: Object,
     default: () => {
       return {
-        id: 0,
+        questionId: 0,
         type: 0,
         content: '',
         score: 0,
@@ -81,7 +81,7 @@ const alterQuestion = () => {
 
   if (val.type <= 1) {
     result = {
-      questionId: val.id,
+      questionId: val.questionId,
       type: val.type,
       content: val.content,
       score: val.score,
@@ -93,7 +93,7 @@ const alterQuestion = () => {
   } else if (val.type === 3) {
     let judgeOption = val.options[0].content === '正确' ? val.options[0].isCorrect : !val.options[0].isCorrect
     result = {
-      questionId: val.id,
+      questionId: val.questionId,
       type: val.type,
       content: val.content,
       score: val.score,
@@ -104,7 +104,7 @@ const alterQuestion = () => {
     }
   } else {
     result = {
-      questionId: val.id,
+      questionId: val.questionId,
       type: val.type,
       content: val.content,
       score: val.score,

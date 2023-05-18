@@ -55,12 +55,12 @@ export function getUserCount(permission) {
 }
 
 // 更新用户信息
-export function updateUser(id, no, email, name, age, password, permission) {
+export function updateUser(userId, no, email, name, age, password, permission) {
   return http({
     url: '/user/update',
     method: 'post',
     data: {
-      id,
+      userId,
       no,
       email,
       name,

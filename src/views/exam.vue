@@ -1,85 +1,103 @@
 <template>
   <main>
-    <div class="left">
+    <div class='left'>
       <nav>
-        <n-progress type="circle" :percentage="percentage" />
+        <n-progress type='circle' :percentage='percentage' />
 
-        <n-grid x-gap="12" :cols="4" :y-gap="8" class="nav-list">
-          <n-gi v-for="(item, index) in len">
+        <n-grid x-gap='12' :cols='4' :y-gap='8' class='nav-list'>
+          <n-gi v-for='(item, index) in questionList.questionList'>
             <a
-              class="nav-item"
-              :class="{ done: options[item] !== null }"
-              @click="scrollToQuestion(index)"
+              class='nav-item'
+              :class='{ done: options[index] !== null }'
+              @click='scrollToQuestion(index)'
             >
-              <span class="question-id">{{ index + 1 }}</span>
+              <span class='question-id'>{{ index + 1 }}</span>
             </a>
           </n-gi>
         </n-grid>
 
-        <n-popconfirm :negative-text="null" @positive-click="submitExam">
+        <n-popconfirm :negative-text='null' @positive-click='submitExam'>
           <template #trigger>
-            <n-button class="submit" type="info">提交试卷</n-button>
+            <n-button class='submit' type='info'>提交试卷</n-button>
           </template>
           提交后无法修改，确认提交
         </n-popconfirm>
       </nav>
     </div>
-    <div class="right" ref="questionListRef">
+    <div class='right' ref='questionListRef'>
       <exam-question-card
-        class="question-card"
-        v-for="(item, index) in len"
-        :qindex="index"
-        :q-index="index"
-        @sendAnswer="getAnswer"
+        class='question-card'
+        v-for='(item, index) in questionList.questionList'
+        :qindex='index'
+        :question='item'
+        :q-index='index'
+        @sendAnswer='getAnswer'
       ></exam-question-card>
     </div>
   </main>
 </template>
 
 <script setup>
-import { NGrid, NGi, NProgress, NButton, NPopconfirm } from 'naive-ui';
-import { ref, computed } from 'vue';
-import ExamQuestionCard from '../components/examQuestionCard.vue';
+import { NGrid, NGi, NProgress, NButton, NPopconfirm } from 'naive-ui'
+import { ref, computed } from 'vue'
+import ExamQuestionCard from '../components/examQuestionCard.vue'
+import { useRoute } from 'vue-router'
+import router from '../route/index.js'
+import { getExam } from '../apis/paper.js'
 
-const questionListRef = ref(null);
-const len = ref([]);
-const showPop = ref(false);
+
+const route = useRoute()
+const questionListRef = ref(null)
+const len = ref([])
 
 const percentage = computed(() => {
   return parseInt(
     (options.value.reduce((pre, cur) => {
-      if (cur !== null) return pre + 1;
-      return pre;
-    }, 0) /
+        if (cur !== null) return pre + 1
+        return pre
+      }, 0) /
       options.value.length) *
-      100
-  );
-});
+    100
+  )
+})
+// 题目列表
+const questionList = ref([])
 
-const options = ref([]);
+// 答案列表
+const options = ref([])
 
 for (let i = 0; i < 3; i++) {
-  len.value.push(i);
-  options.value.push(null);
+  len.value.push(i)
+  options.value.push(null)
 }
 
 const getAnswer = (val) => {
-  options.value[val.id] = val;
-};
+  options.value[val.index] = val
+}
 
 const scrollToQuestion = (index) => {
   questionListRef.value.children[index].scrollIntoView({
     block: 'start',
-    behavior: 'smooth',
-  });
-};
+    behavior: 'smooth'
+  })
+}
+
+// 获取试卷
+const getExamDetail = () => {
+  getExam(route.params.studentPaperId, 4).then((res) => {
+    questionList.value = res.data
+    console.log(res)
+  })
+}
+
+getExamDetail()
 
 const submitExam = () => {
   // TODO: 提交试卷
-};
+}
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 main {
   display: flex;
   flex-direction: row;

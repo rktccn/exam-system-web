@@ -14,46 +14,30 @@
         活跃的考试
       </n-divider>
 
-
       <n-grid x-gap='12' :cols='4' :y-gap='8'>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
-        </n-gi>
-        <n-gi>
-          <exam-card />
+        <n-gi class='exam-item' v-for='(item,index) in examList.active' :key='index'>
+          <exam-card :exam-info='item' />
         </n-gi>
       </n-grid>
+      <n-pagination class='pagination' v-model:page='examList.activePage'
+                    :page-count='Math.ceil(examList.activeCount / 16)'
+                    :on-update-page='getActiveExam' />
 
       <n-divider title-placement='left' class='subtitle'>
         已结束的考试
       </n-divider>
+
+      <!--考试列表-->
+      <n-grid x-gap='12' :cols='4' :y-gap='8'>
+        <n-gi class='exam-item' v-for='(item,index) in examList.finished' :key='index'>
+          <exam-card :exam-info='item' />
+        </n-gi>
+      </n-grid>
+      <n-pagination class='pagination' v-model:page='examList.finishedPage'
+                    :page-count='Math.ceil(examList.finishedCount / 16)'
+                    :on-update-page='getFinishedExam' />
+
+
     </main>
 
     <!--添加考试窗口-->
@@ -65,7 +49,7 @@
         size='huge'
         aria-modal='true'
       >
-        <pre>{{ examValue }}</pre>
+        <!--        <pre>{{ examValue }}</pre>-->
 
         <p>考试名称</p>
         <n-input placeholder='输入考试名称' v-model:value='examValue.title'></n-input>
@@ -113,13 +97,23 @@ import {
   NCard,
   NInput,
   NDatePicker,
-  NTransfer
+  NTransfer,
+  NPagination
 } from 'naive-ui'
 import ExamCard from '../../components/examCard.vue'
 import { computed, ref } from 'vue'
 import { getQuestionList } from '../../apis/question.js'
 import { getAllUser } from '../../apis/user.js'
 import { createPaper, getPaperList } from '../../apis/paper.js'
+
+const examList = ref({
+  active: [],
+  activePage: 1,
+  activeCount: 0,
+  finished: [],
+  finishedPage: 1,
+  finishedCount: 0
+})
 
 const showModal = ref(false)
 
@@ -150,17 +144,24 @@ const duration = computed(() => {
 })
 
 
-getQuestionList().then(res => {
-  questionList.value = res.data.questionList.map(item => {
-    return { label: item.content, value: item.id, score: item.score }
+// 获取活跃的考试
+const getActiveExam = () => {
+  const offset = (examList.value.activePage - 1) * 16
+  getPaperList(1, offset, 16).then(res => {
+    examList.value.active = res.rows
+    examList.value.activeCount = res.count
   })
-})
+}
 
-getAllUser({ permission: 2 }).then(res => {
-  studentList.value = res.rows.map(item => {
-    return { label: item.name, value: item.id }
+// 获取已结束的考试
+const getFinishedExam = () => {
+  const offset = (examList.value.finishedPage - 1) * 16
+  getPaperList(0, offset, 16).then(res => {
+    examList.value.finished = res.rows
+    examList.value.finishedCount = res.count
+    console.log(res)
   })
-})
+}
 
 const createExam = () => {
   examValue.value = examValueDefault
@@ -168,20 +169,26 @@ const createExam = () => {
 }
 
 const submitExam = () => {
-  console.log(examValue.value)
   createPaper(examValue.value).then(res => {
-    console.log(res)
+    getActiveExam()
+    getFinishedExam()
+    showModal.value = false
   })
 }
 
-getPaperList().then(res => {
-
-  console.log(res)
+getActiveExam()
+getFinishedExam()
+getQuestionList().then(res => {
+  questionList.value = res.data.questionList.map(item => {
+    return { label: item.content, value: item.questionId, score: item.score }
+  })
 })
 
-// 获取题目
-
-// 获取学生
+getAllUser({ permission: 2 }).then(res => {
+  studentList.value = res.rows.map(item => {
+    return { label: item.name, value: item.userId }
+  })
+})
 
 </script>
 
@@ -194,6 +201,18 @@ main {
   nav {
     margin-top: 20px;
     margin-bottom: 20px;
+  }
+
+  .pagination {
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .exam-item {
+    &:hover {
+      z-index: 9999;
+    }
   }
 }
 

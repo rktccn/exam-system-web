@@ -48,12 +48,12 @@ const routes = [
     ],
   },
   {
-    path: '/exam/:id',
+    path: '/exam/:studentPaperId',
     name: 'exam',
     component: () => import('../views/exam.vue'),
   },
   {
-    path: '/exam/:id/grade',
+    path: '/exam/:studentPaperId/grade',
     name: 'examGrade',
     component: () => import('../views/examGrade.vue'),
   },
