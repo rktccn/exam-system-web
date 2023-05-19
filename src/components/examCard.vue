@@ -31,6 +31,8 @@ const props = defineProps({
   }
 })
 
+
+
 const jumpToExam = () => {
 
   console.log(props.examInfo)

@@ -2,8 +2,10 @@
   <main>
     <div class='left'>
       <nav>
+        <!--题目完成度-->
         <n-progress type='circle' :percentage='percentage' />
 
+        <!--题目导航-->
         <n-grid x-gap='12' :cols='4' :y-gap='8' class='nav-list'>
           <n-gi v-for='(item, index) in questionList.questionList'>
             <a
@@ -16,12 +18,18 @@
           </n-gi>
         </n-grid>
 
+        <!--提交试卷-->
         <n-popconfirm :negative-text='null' @positive-click='submitExam'>
           <template #trigger>
             <n-button class='submit' type='info'>提交试卷</n-button>
           </template>
           提交后无法修改，确认提交
         </n-popconfirm>
+
+        <!--考试信息-->
+        <div class='info'>
+          <span>剩余时长：<n-countdown :duration='timeLeft' /></span>
+        </div>
       </nav>
     </div>
     <div class='right' ref='questionListRef'>
@@ -38,17 +46,17 @@
 </template>
 
 <script setup>
-import { NGrid, NGi, NProgress, NButton, NPopconfirm } from 'naive-ui'
+import { NGrid, NGi, NProgress, NButton, NPopconfirm, NCountdown } from 'naive-ui'
 import { ref, computed } from 'vue'
 import ExamQuestionCard from '../components/examQuestionCard.vue'
-import { useRoute } from 'vue-router'
-import router from '../route/index.js'
-import { getExam } from '../apis/paper.js'
+import { useRoute, useRouter } from 'vue-router'
+import { getExam, submitPaper } from '../apis/paper.js'
 
 
 const route = useRoute()
+const router = useRouter()
 const questionListRef = ref(null)
-const len = ref([])
+const timeLeft = ref(0) // 剩余时间
 
 const percentage = computed(() => {
   return parseInt(
@@ -60,16 +68,12 @@ const percentage = computed(() => {
     100
   )
 })
+
 // 题目列表
 const questionList = ref([])
 
 // 答案列表
 const options = ref([])
-
-for (let i = 0; i < 3; i++) {
-  len.value.push(i)
-  options.value.push(null)
-}
 
 const getAnswer = (val) => {
   options.value[val.index] = val
@@ -85,8 +89,14 @@ const scrollToQuestion = (index) => {
 // 获取试卷
 const getExamDetail = () => {
   getExam(route.params.studentPaperId, 4).then((res) => {
+    if (res.code !== 200) {
+      router.push({ name: 'error', params: { message: res.msg } })
+      return
+    }
+
     questionList.value = res.data
-    console.log(res)
+    timeLeft.value = new Date(res.data.paper.endTime) - Date.now()
+    options.value = new Array(res.data.questionList.length).fill(null)
   })
 }
 
@@ -94,6 +104,12 @@ getExamDetail()
 
 const submitExam = () => {
   // TODO: 提交试卷
+  submitPaper(route.params.studentPaperId, options.value).then((res) => {
+    console.log(res)
+    if (res.code === 200) {
+      router.push({ name: 'examResult', params: { studentPaperId: route.params.studentPaperId } })
+    }
+  })
 }
 </script>
 
@@ -129,6 +145,12 @@ main {
       flex-direction: column;
       align-items: center;
       padding: 20px 25px;
+
+      .info {
+        margin-top: 25px;
+        font-size: 14px;
+        opacity: .7;
+      }
     }
 
     .nav-list {

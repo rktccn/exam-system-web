@@ -51,3 +51,27 @@ export const getExam = (studentPaperId, userId) => {
     }
   })
 }
+
+
+// 提交试卷
+export const submitPaper = (studentPaperId, answers) => {
+  return http({
+    url: '/paper/submit',
+    method: 'post',
+    data: {
+      studentPaperId,
+      answers
+    }
+  })
+}
+
+// 获取考试结果
+export const getExamResult = (studentPaperId) => {
+  return http({
+    url: '/paper/result',
+    method: 'get',
+    params: {
+      studentPaperId
+    }
+  })
+}

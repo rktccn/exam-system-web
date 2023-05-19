@@ -54,7 +54,7 @@ const routes = [
   },
   {
     path: '/exam/:studentPaperId/grade',
-    name: 'examGrade',
+    name: 'examResult',
     component: () => import('../views/examGrade.vue'),
   },
   {
@@ -67,6 +67,12 @@ const routes = [
     name: 'register',
     component: () => import('../views/login/register.vue'),
   },
+  // 错误页面
+  {
+    path: '/error/:message',
+    name: 'error',
+    component: () => import('../views/error.vue'),
+  }
 ];
 
 const router = createRouter({
