@@ -39,6 +39,8 @@ const underLineStyle = computed(() => {
       bottom: 50%;
       left: -10%;
       transform: translate(0, 50%);
+
+      border-radius: 20px;
     }
   }
 }
@@ -50,12 +52,12 @@ const underLineStyle = computed(() => {
   width: 100%;
   height: 30%;
   opacity: 0.5;
-
   transition: all 0.15s;
 }
 
 .underline-content {
   position: relative;
   font-size: 14px;
+  vertical-align: middle;
 }
 </style>
