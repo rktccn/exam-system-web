@@ -1,17 +1,15 @@
-import http from '../utils/http.js'
-
+import http from '../utils/http.js';
 
 export function login(no = null, email = null, password) {
-
   return http({
     url: '/login',
     method: 'post',
     data: {
       no,
       email,
-      password
-    }
-  })
+      password,
+    },
+  });
 }
 
 export function register(no, password, email, name, age) {
@@ -23,24 +21,22 @@ export function register(no, password, email, name, age) {
       password,
       email,
       name,
-      age
-    }
-  })
+      age,
+    },
+  });
 }
-
 
 // 获取用户列表
 export function getAllUser(res) {
-
   return http({
     url: '/role/all',
     method: 'get',
     params: {
       limit: res?.limit | 10,
       offset: res?.offset | 0,
-      permission: res?.permission
-    }
-  })
+      permission: res?.permission,
+    },
+  });
 }
 
 // 获取用户数量
@@ -49,9 +45,9 @@ export function getUserCount(permission) {
     url: '/user/count',
     method: 'get',
     params: {
-      permission
-    }
-  })
+      permission,
+    },
+  });
 }
 
 // 更新用户信息
@@ -66,7 +62,7 @@ export function updateUser(userId, no, email, name, age, password, permission) {
       name,
       age,
       password,
-      permission
-    }
-  })
+      permission,
+    },
+  });
 }

@@ -1,119 +1,128 @@
 <template>
   <main>
-    <div class='left'>
+    <div class="left">
       <nav>
         <!--题目完成度-->
-        <n-progress type='circle' :percentage='percentage' />
+        <n-progress type="circle" :percentage="percentage" />
 
         <!--题目导航-->
-        <n-grid x-gap='12' :cols='4' :y-gap='8' class='nav-list'>
-          <n-gi v-for='(item, index) in questionList.questionList'>
+        <n-grid x-gap="12" :cols="4" :y-gap="8" class="nav-list">
+          <n-gi v-for="(item, index) in questionList.questionList">
             <a
-              class='nav-item'
-              :class='{ done: options[index] !== null }'
-              @click='scrollToQuestion(index)'
+              class="nav-item"
+              :class="{ done: options[index] !== null }"
+              @click="scrollToQuestion(index)"
             >
-              <span class='question-id'>{{ index + 1 }}</span>
+              <span class="question-id">{{ index + 1 }}</span>
             </a>
           </n-gi>
         </n-grid>
 
         <!--提交试卷-->
-        <n-popconfirm :negative-text='null' @positive-click='submitExam'>
+        <n-popconfirm :negative-text="null" @positive-click="submitExam">
           <template #trigger>
-            <n-button class='submit' type='info'>提交试卷</n-button>
+            <n-button class="submit" type="info">提交试卷</n-button>
           </template>
           提交后无法修改，确认提交
         </n-popconfirm>
 
         <!--考试信息-->
-        <div class='info'>
-          <span>剩余时长：<n-countdown :duration='timeLeft' /></span>
+        <div class="info">
+          <span>剩余时长：<n-countdown :duration="timeLeft" /></span>
         </div>
       </nav>
     </div>
-    <div class='right' ref='questionListRef'>
+    <div class="right" ref="questionListRef">
       <exam-question-card
-        class='question-card'
-        v-for='(item, index) in questionList.questionList'
-        :qindex='index'
-        :question='item'
-        :q-index='index'
-        @sendAnswer='getAnswer'
+        class="question-card"
+        v-for="(item, index) in questionList.questionList"
+        :qindex="index"
+        :question="item"
+        :q-index="index"
+        @sendAnswer="getAnswer"
       ></exam-question-card>
     </div>
   </main>
 </template>
 
 <script setup>
-import { NGrid, NGi, NProgress, NButton, NPopconfirm, NCountdown } from 'naive-ui'
-import { ref, computed } from 'vue'
-import ExamQuestionCard from '../components/examQuestionCard.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { getExam, submitPaper } from '../apis/paper.js'
+import {
+  NGrid,
+  NGi,
+  NProgress,
+  NButton,
+  NPopconfirm,
+  NCountdown,
+} from 'naive-ui';
+import { ref, computed } from 'vue';
+import ExamQuestionCard from '../components/examQuestionCard.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { getExam, submitPaper } from '../apis/paper.js';
 
-
-const route = useRoute()
-const router = useRouter()
-const questionListRef = ref(null)
-const timeLeft = ref(0) // 剩余时间
+const route = useRoute();
+const router = useRouter();
+const questionListRef = ref(null);
+const timeLeft = ref(0); // 剩余时间
 
 const percentage = computed(() => {
   return parseInt(
     (options.value.reduce((pre, cur) => {
-        if (cur !== null) return pre + 1
-        return pre
-      }, 0) /
+      if (cur !== null) return pre + 1;
+      return pre;
+    }, 0) /
       options.value.length) *
-    100
-  )
-})
+      100
+  );
+});
 
 // 题目列表
-const questionList = ref([])
+const questionList = ref([]);
 
 // 答案列表
-const options = ref([])
+const options = ref([]);
 
 const getAnswer = (val) => {
-  options.value[val.index] = val
-}
+  options.value[val.index] = val;
+};
 
 const scrollToQuestion = (index) => {
   questionListRef.value.children[index].scrollIntoView({
     block: 'start',
-    behavior: 'smooth'
-  })
-}
+    behavior: 'smooth',
+  });
+};
 
 // 获取试卷
 const getExamDetail = () => {
   getExam(route.params.studentPaperId, 4).then((res) => {
     if (res.code !== 200) {
-      router.push({ name: 'error', params: { message: res.msg } })
-      return
+      router.push({ name: 'error', params: { message: res.msg } });
+      return;
     }
 
-    questionList.value = res.data
-    timeLeft.value = new Date(res.data.paper.endTime) - Date.now()
-    options.value = new Array(res.data.questionList.length).fill(null)
-  })
-}
+    questionList.value = res.data;
+    timeLeft.value = new Date(res.data.paper.endTime) - Date.now();
+    options.value = new Array(res.data.questionList.length).fill(null);
+  });
+};
 
-getExamDetail()
+getExamDetail();
 
 const submitExam = () => {
   // TODO: 提交试卷
   submitPaper(route.params.studentPaperId, options.value).then((res) => {
-    console.log(res)
+    console.log(res);
     if (res.code === 200) {
-      router.push({ name: 'examResult', params: { studentPaperId: route.params.studentPaperId } })
+      router.push({
+        name: 'examResult',
+        params: { studentPaperId: route.params.studentPaperId },
+      });
     }
-  })
-}
+  });
+};
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 main {
   display: flex;
   flex-direction: row;
@@ -149,7 +158,7 @@ main {
       .info {
         margin-top: 25px;
         font-size: 14px;
-        opacity: .7;
+        opacity: 0.7;
       }
     }
 

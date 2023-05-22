@@ -58,6 +58,11 @@ const routes = [
     component: () => import('../views/examGrade.vue'),
   },
   {
+    path: '/exam/:paperId/analyze',
+    name: 'examAnalyze',
+    component: () => import('../views/examAnalyze.vue'),
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('../views/login/login.vue'),
@@ -72,7 +77,7 @@ const routes = [
     path: '/error/:message',
     name: 'error',
     component: () => import('../views/error.vue'),
-  }
+  },
 ];
 
 const router = createRouter({
