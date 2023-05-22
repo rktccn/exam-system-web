@@ -2,8 +2,22 @@
   <main>
     <n-gradient-text type="info" class="examName"> 测试一 </n-gradient-text>
 
-    <n-divider title-placement="left">基本信息</n-divider>
+    <n-grid x-gap="12" :cols="6" class="base">
+      <n-gi class="base-info">
+        <span>总分：100</span>
+        <span>考试人数：2/3</span>
+        <span>平均分：2/3</span>
+        <span>最高分：2/3</span>
+        <span>最低分：2/3</span>
+      </n-gi>
 
+      <n-gi :span="5">
+        <v-chart class="gradeChart" :option="gradeOption" autoresize />
+      </n-gi>
+    </n-grid>
+
+    <!-- <n-divider title-placement="left">基本信息</n-divider> -->
+    <!-- 
     <div class="base-info">
       <n-grid x-gap="10" :cols="5">
         <n-gi>
@@ -25,16 +39,25 @@
     </div>
 
     <n-divider title-placement="left">成绩分布</n-divider>
-    <v-chart class="gradeChart" :option="gradeOption" autoresize />
+    <v-chart class="gradeChart" :option="gradeOption" autoresize /> -->
 
-    <n-divider title-placement="left"> 题目分析</n-divider>
+    <!-- <n-divider title-placement="left"> 题目分析</n-divider> -->
     <section>
       <n-grid x-gap="12" :cols="4" class="question">
         <n-gi :span="3">
           <div>123</div>
         </n-gi>
         <n-gi>
-          <v-chart class="accuracyChart" :option="accuracyOption" autoresize />
+          <div class="accuracy">
+            <span>正确率</span>
+            <n-progress
+              type="circle"
+              :percentage="accuracy"
+              :color="themeVars.successColor"
+              :rail-color="changeColor(themeVars.successColor, { alpha: 0.2 })"
+              :indicator-text-color="themeVars.successColor"
+            />
+          </div>
         </n-gi>
       </n-grid>
     </section>
@@ -42,26 +65,19 @@
 </template>
 
 <script setup>
-import { NDivider, NGrid, NGi, NGradientText } from 'naive-ui';
+import { NDivider, NGrid, NGi, NGradientText, NProgress } from 'naive-ui';
+import { changeColor } from 'seemly';
+import { useThemeVars } from 'naive-ui';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { BarChart, PieChart } from 'echarts/charts';
-import {
-  GridComponent,
-  TooltipComponent,
-  TitleComponent,
-} from 'echarts/components';
+import { BarChart } from 'echarts/charts';
+import { GridComponent, TooltipComponent } from 'echarts/components';
 import VChart, { THEME_KEY } from 'vue-echarts';
 import { ref, provide } from 'vue';
 
-use([
-  CanvasRenderer,
-  TooltipComponent,
-  GridComponent,
-  TitleComponent,
-  BarChart,
-  PieChart,
-]);
+const themeVars = useThemeVars();
+
+use([CanvasRenderer, TooltipComponent, GridComponent, BarChart]);
 
 provide(THEME_KEY, 'light');
 
@@ -101,56 +117,67 @@ const gradeOption = ref({
   },
 });
 
-const accuracyOption = ref({
-  title: {
-    text: '正确率',
-    left: 'center',
-  },
-  tooltip: {
-    trigger: 'item',
-  },
-  series: [
-    {
-      type: 'pie',
-      radius: '50%',
-      data: [
-        { value: 1048, name: '正确' },
-        { value: 735, name: '错误' },
-      ],
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)',
-        },
-      },
-    },
-  ],
-});
+const accuracy = ref(30);
 </script>
 
 <style lang="scss">
 main {
-  padding: 35px 80px;
+  padding: 35px 120px;
 
   .examName {
     display: block;
+    margin-bottom: 48px;
     font-size: 48px;
     font-weight: bolder;
     text-align: center;
     letter-spacing: 8px;
   }
 
-  .question {
-    height: 280px;
+  .base {
+    margin-bottom: 48px;
+
+    .base-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      border-radius: 25px;
+
+      > * {
+        margin: 8px 0;
+        font-size: 18px;
+        font-weight: bolder;
+      }
+    }
+
+    .gradeChart {
+      height: 480px;
+      background-color: #fff;
+      border-radius: 25px;
+    }
   }
-}
 
-.gradeChart {
-  height: 480px;
-}
+  .question {
+    box-sizing: border-box;
+    align-items: center;
+    margin: 8px 0;
+    padding: 25px 35px;
+    height: 280px;
 
-.accuracyChart {
-  height: 100%;
+    background-color: #fff;
+    border-radius: 25px;
+
+    .accuracy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      span {
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+    }
+  }
 }
 </style>
