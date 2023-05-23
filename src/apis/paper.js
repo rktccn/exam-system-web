@@ -1,4 +1,4 @@
-import http from '../utils/http.js';
+import http from '../utils/http.js'
 
 // 创建试卷
 export const createPaper = (data) => {
@@ -7,10 +7,10 @@ export const createPaper = (data) => {
     method: 'post',
     data: {
       teacherId: 2,
-      ...data,
-    },
-  });
-};
+      ...data
+    }
+  })
+}
 
 // 获取试卷列表
 export const getPaperList = (type, offset = 0, limit = 10) => {
@@ -20,10 +20,10 @@ export const getPaperList = (type, offset = 0, limit = 10) => {
     params: {
       limit,
       offset,
-      type,
-    },
-  });
-};
+      type
+    }
+  })
+}
 
 // 获取学生试卷列表
 export const getStudentPaperList = (
@@ -39,10 +39,10 @@ export const getStudentPaperList = (
       studentId,
       limit,
       offset,
-      type,
-    },
-  });
-};
+      type
+    }
+  })
+}
 
 // 获取考试
 export const getExam = (studentPaperId, userId) => {
@@ -51,10 +51,10 @@ export const getExam = (studentPaperId, userId) => {
     method: 'get',
     params: {
       studentPaperId,
-      userId,
-    },
-  });
-};
+      userId
+    }
+  })
+}
 
 // 提交试卷
 export const submitPaper = (studentPaperId, answers) => {
@@ -63,10 +63,10 @@ export const submitPaper = (studentPaperId, answers) => {
     method: 'post',
     data: {
       studentPaperId,
-      answers,
-    },
-  });
-};
+      answers
+    }
+  })
+}
 
 // 获取考试结果
 export const getExamResult = (studentPaperId) => {
@@ -74,7 +74,29 @@ export const getExamResult = (studentPaperId) => {
     url: '/paper/result',
     method: 'get',
     params: {
-      studentPaperId,
-    },
-  });
-};
+      studentPaperId
+    }
+  })
+}
+
+// 获取考试结果概况
+export const getExamResultSummary = (paperId) => {
+  return http({
+    url: '/paper/result-summary',
+    method: 'get',
+    params: {
+      paperId
+    }
+  })
+}
+
+// 获取试卷详情
+export const getPaperDetail = (paperId) => {
+  return http({
+    url: '/paper/detail',
+    method: 'get',
+    params: {
+      paperId
+    }
+  })
+}

@@ -1,44 +1,45 @@
 <template>
   <main>
-    <div class="grade-block">
+    <div class='grade-block'>
       <h2>{{ result.paperName }}</h2>
       <div>
         得分：
         <n-number-animation
-          ref="numberAnimationInstRef"
-          :from="0"
-          :to="result.score"
+          ref='numberAnimationInstRef'
+          :from='0'
+          :to='result.score'
         />
         / {{ result.totalScore }}
       </div>
       <div>提交时间：{{ new Date(result.submitTime).toLocaleString() }}</div>
+      <n-button @click='backToHome' type='info'>返回主页</n-button>
     </div>
 
     <!--答题记录-->
-    <section class="detail-modal" :class="modalShow ? 'show' : 'hide'">
-      <span class="change-modal-show" @click="alterModalShow"
-        ><n-icon :size="40"><arrow-drop-down-round /></n-icon
+    <section class='detail-modal' :class="modalShow ? 'show' : 'hide'">
+      <span class='change-modal-show' @click='alterModalShow'
+      ><n-icon :size='40'><arrow-drop-down-round /></n-icon
       ></span>
       <main>
-        <template v-for="(item, index) in questionList" :key="index">
+        <template v-for='(item, index) in questionList' :key='index'>
           <exam-question-card
-            :question="item"
-            :qindex="index"
-            :show-answer="true"
+            :question='item'
+            :qindex='index'
+            :show-answer='true'
           ></exam-question-card>
         </template>
-        <template v-for="(item, index) in questionList" :key="index">
+        <template v-for='(item, index) in questionList' :key='index'>
           <exam-question-card
-            :question="item"
-            :qindex="index"
-            :show-answer="true"
+            :question='item'
+            :qindex='index'
+            :show-answer='true'
           ></exam-question-card>
         </template>
-        <template v-for="(item, index) in questionList" :key="index">
+        <template v-for='(item, index) in questionList' :key='index'>
           <exam-question-card
-            :question="item"
-            :qindex="index"
-            :show-answer="true"
+            :question='item'
+            :qindex='index'
+            :show-answer='true'
           ></exam-question-card>
         </template>
       </main>
@@ -47,21 +48,22 @@
 </template>
 
 <script setup>
-import { NNumberAnimation, NIcon } from 'naive-ui';
-import { ArrowDropDownRound } from '@vicons/material';
-import { getExamResult } from '../apis/paper.js';
-import { useRoute } from 'vue-router';
-import { ref } from 'vue';
-import ExamQuestionCard from '../components/examQuestionCard.vue';
+import { NNumberAnimation, NIcon, NButton } from 'naive-ui'
+import { ArrowDropDownRound } from '@vicons/material'
+import { getExamResult } from '../apis/paper.js'
+import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import ExamQuestionCard from '../components/examQuestionCard.vue'
 
-const route = useRoute();
+const route = useRoute()
+const router = useRouter()
 
 const result = ref({
   paperName: '',
   score: 0,
   totalScore: 0,
-  submitTime: '',
-});
+  submitTime: ''
+})
 
 const questionList = ref([
   // {
@@ -84,19 +86,23 @@ const questionList = ref([
   //     isCorrect: false
   //   }
   // }
-]);
+])
 
-const modalShow = ref(false);
+const backToHome = () => {
+  router.push('/home')
+}
+
+const modalShow = ref(false)
 const alterModalShow = () => {
-  modalShow.value = !modalShow.value;
-};
+  modalShow.value = !modalShow.value
+}
 
 getExamResult(route.params.studentPaperId).then((res) => {
-  console.log(res);
-  result.value.paperName = res.data.paper.paperName;
-  result.value.score = res.data.studentPaper.score;
-  result.value.submitTime = res.data.studentPaper.submitTime;
-  result.value.totalScore = res.data.paper.totalScore;
+  console.log(res)
+  result.value.paperName = res.data.paper.paperName
+  result.value.score = res.data.studentPaper.score
+  result.value.submitTime = res.data.studentPaper.submitTime
+  result.value.totalScore = res.data.paper.totalScore
 
   res.data.questionList.forEach((item) => {
     questionList.value.push({
@@ -105,27 +111,27 @@ getExamResult(route.params.studentPaperId).then((res) => {
       questionId: item.questionId,
       question: {
         type: item.question.type,
-        content: item.question.content,
+        content: item.question.content
       },
       options: item.options.map((option) => {
         return {
           questionOptionId: option.questionOptionId,
           content: option.content,
-          isCorrect: option.isCorrect,
-        };
+          isCorrect: option.isCorrect
+        }
       }),
       answer: {
         content: item.answer[0].content,
-        isCorrect: item.answer[0].isCorrect,
-      },
-    });
-  });
+        isCorrect: item.answer[0].isCorrect
+      }
+    })
+  })
 
-  console.log(questionList.value);
-});
+  console.log(questionList.value)
+})
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 main {
   position: relative;
   overflow: hidden;
