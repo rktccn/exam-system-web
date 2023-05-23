@@ -105,31 +105,42 @@ const setRouterLinkActive = () => {
     text-decoration: none;
 
     cursor: pointer;
-
     transition: all 0.3s;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 25px;
+      height: 0%;
+      width: 2px;
+
+      border-radius: 2px;
+
+      background-color: #fff;
+      opacity: 0.8;
+
+      transform: translateY(-50%);
+      transition: all 0.15s;
+    }
 
     &.router-link-active {
       background-color: rgba(32, 128, 240, 0.3);
       color: #2080f0;
 
       &:before {
-        content: '';
-        position: absolute;
-        left: 25px;
-        top: 50%;
         height: 70%;
-        width: 2px;
-        border-radius: 4px;
         background-color: #2080f0;
-        opacity: 0.8;
-
-        transform: translateY(-50%);
       }
     }
 
     &:hover {
       color: #fff;
       background-color: rgba(32, 128, 240, 0.5);
+
+      &:before {
+        height: 70%;
+      }
     }
   }
 }
