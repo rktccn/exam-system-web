@@ -121,7 +121,7 @@ const setRouterLinkActive = () => {
       opacity: 0.8;
 
       transform: translateY(-50%);
-      transition: all 0.15s;
+      transition: all 0.3s;
     }
 
     &.router-link-active {

@@ -4,7 +4,15 @@
 
     <main>
       <nav>
-        <n-button type="info" @click="createQuestion">添加题目</n-button>
+        <n-space>
+          <n-button type="info" @click="createQuestion">添加题目</n-button>
+          <n-input
+            v-model:value="searchValue"
+            type="text"
+            placeholder="搜索"
+            @keyup="doSearch"
+          />
+        </n-space>
       </nav>
 
       <div v-if="questionList.length !== 0">
@@ -134,6 +142,14 @@ import {
 } from '../../apis/question.js';
 
 const showModal = ref(false);
+const searchValue = ref('');
+
+const doSearch = (v) => {
+  if (v.keyCode === 13) {
+    console.log('搜索');
+    // TODO: 添加搜索功能
+  }
+};
 
 const questionValue = ref({
   questionId: 0,

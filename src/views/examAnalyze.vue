@@ -1,61 +1,59 @@
 <template>
   <main>
     <n-gradient-text type="info" class="examName"> 测试一 </n-gradient-text>
-
-    <n-grid x-gap="12" :cols="6" class="base">
-      <n-gi class="base-info">
-        <span>总分：100</span>
-        <span>考试人数：2/3</span>
-        <span>平均分：2/3</span>
-        <span>最高分：2/3</span>
-        <span>最低分：2/3</span>
-      </n-gi>
-
-      <n-gi :span="5">
-        <v-chart class="gradeChart" :option="gradeOption" autoresize />
-      </n-gi>
-    </n-grid>
-
-    <!-- <n-divider title-placement="left">基本信息</n-divider> -->
-    <!-- 
-    <div class="base-info">
-      <n-grid x-gap="10" :cols="5">
-        <n-gi>
+    <section>
+      <n-grid x-gap="12" :cols="6" class="base">
+        <n-gi class="base-info">
           <span>总分：100</span>
-        </n-gi>
-        <n-gi>
           <span>考试人数：2/3</span>
+          <span>平均分：30</span>
+          <span>最高分：70</span>
+          <span>最低分：15</span>
         </n-gi>
-        <n-gi>
-          <span>平均分：2/3</span>
+
+        <n-gi :span="4">
+          <v-chart class="gradeChart" :option="gradeOption" autoresize />
         </n-gi>
-        <n-gi>
-          <span>最高分：2/3</span>
-        </n-gi>
-        <n-gi>
-          <span>最低分：2/3</span>
+
+        <n-gi class="rank">
+          <n-scrollbar style="max-height: 415px">
+            <n-space
+              class="rank_item"
+              justify="space-between"
+              v-for="item in 30"
+              :style="item === 1 ? `color:${themeVars.primaryColor};` : ''"
+              ><span>用户{{ item }}</span>
+              <div class="rank_grade">
+                <span>60</span>
+                <n-progress
+                  type="line"
+                  :show-indicator="false"
+                  status="info"
+                  :percentage="60"
+                  rail-style="height:3px"
+                />
+              </div>
+            </n-space>
+          </n-scrollbar>
         </n-gi>
       </n-grid>
-    </div>
-
-    <n-divider title-placement="left">成绩分布</n-divider>
-    <v-chart class="gradeChart" :option="gradeOption" autoresize /> -->
-
-    <!-- <n-divider title-placement="left"> 题目分析</n-divider> -->
+    </section>
     <section>
       <n-grid x-gap="12" :cols="4" class="question">
         <n-gi :span="3">
-          <div>123</div>
+          <div>
+            <!-- TODO: 添加题目显示 -->
+          </div>
         </n-gi>
         <n-gi>
           <div class="accuracy">
-            <span>正确率</span>
+            <span class="title">正确率</span>
             <n-progress
               type="circle"
               :percentage="accuracy"
-              :color="themeVars.successColor"
-              :rail-color="changeColor(themeVars.successColor, { alpha: 0.2 })"
-              :indicator-text-color="themeVars.successColor"
+              :color="accuracyColor"
+              :rail-color="changeColor(accuracyColor, { alpha: 0.2 })"
+              :indicator-text-color="accuracyColor"
             />
           </div>
         </n-gi>
@@ -65,19 +63,37 @@
 </template>
 
 <script setup>
-import { NDivider, NGrid, NGi, NGradientText, NProgress } from 'naive-ui';
+import {
+  NDivider,
+  NGrid,
+  NGi,
+  NGradientText,
+  NProgress,
+  NSpace,
+  NScrollbar,
+} from 'naive-ui';
 import { changeColor } from 'seemly';
 import { useThemeVars } from 'naive-ui';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { BarChart } from 'echarts/charts';
-import { GridComponent, TooltipComponent } from 'echarts/components';
+import {
+  GridComponent,
+  TooltipComponent,
+  TitleComponent,
+} from 'echarts/components';
 import VChart, { THEME_KEY } from 'vue-echarts';
-import { ref, provide } from 'vue';
+import { ref, provide, computed } from 'vue';
 
 const themeVars = useThemeVars();
 
-use([CanvasRenderer, TooltipComponent, GridComponent, BarChart]);
+use([
+  CanvasRenderer,
+  TooltipComponent,
+  TitleComponent,
+  GridComponent,
+  BarChart,
+]);
 
 provide(THEME_KEY, 'light');
 
@@ -118,6 +134,15 @@ const gradeOption = ref({
 });
 
 const accuracy = ref(30);
+const accuracyColor = computed(() => {
+  if (accuracy.value < 50) {
+    return themeVars.value.errorColor;
+  } else if (accuracy.value < 70) {
+    return themeVars.value.warningColor;
+  } else {
+    return themeVars.value.successColor;
+  }
+});
 </script>
 
 <style lang="scss">
@@ -136,13 +161,16 @@ main {
   .base {
     margin-bottom: 48px;
 
+    > * {
+      background-color: #fff;
+      border-radius: 25px;
+    }
+
     .base-info {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #fff;
-      border-radius: 25px;
 
       > * {
         margin: 8px 0;
@@ -151,10 +179,30 @@ main {
       }
     }
 
+    .rank {
+      padding: 45px 25px;
+      font-size: 18px;
+      font-weight: bolder;
+
+      .rank_item:first-child {
+        margin-bottom: 16px;
+      }
+
+      .rank_item {
+        margin-bottom: 8px;
+        padding: 0 40px;
+      }
+
+      .rank_grade {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
     .gradeChart {
       height: 480px;
-      background-color: #fff;
-      border-radius: 25px;
+      padding-top: 25px;
     }
   }
 
@@ -173,7 +221,7 @@ main {
       flex-direction: column;
       align-items: center;
 
-      span {
+      .title {
         margin-bottom: 8px;
         font-size: 16px;
       }
