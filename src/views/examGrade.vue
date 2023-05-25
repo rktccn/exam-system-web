@@ -20,6 +20,7 @@
       <span class='change-modal-show' @click='alterModalShow'
       ><n-icon :size='40'><arrow-drop-down-round /></n-icon
       ></span>
+
       <main>
         <template v-for='(item, index) in questionList' :key='index'>
           <exam-question-card

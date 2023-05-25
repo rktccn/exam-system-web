@@ -1,77 +1,82 @@
 <template>
-  <div class="side-bar">
-    <span class="title">在线考试平台</span>
-    <nav class="nav">
-      <template v-for="item in sideBarContent">
+  <div class='side-bar'>
+    <span class='title'>在线考试平台</span>
+    <nav class='nav'>
+      <template v-for='item in sideBarContent'>
         <router-link
-          class="nav-item"
-          v-if="item.permission.includes(userPermission)"
-          :to="`${item.pathName}`"
+          class='nav-item'
+          v-if='item.permission.includes(userPermission)'
+          :to='`${item.pathName}`'
         >
           {{ item.name }}
         </router-link>
       </template>
 
-      <p class="nav-item">{{ userPermission }}</p>
+      <p class='nav-item'>{{ userPermission }}</p>
     </nav>
   </div>
 </template>
 
 <script setup>
-import { useStore } from '../store/main.js';
-import { useRouter } from 'vue-router';
+import { useStore } from '../store/main.js'
+import { useRouter } from 'vue-router'
 
-const store = useStore();
-const router = useRouter();
+const store = useStore()
+const router = useRouter()
 
-const userPermission = store.getPermission;
+const userPermission = store.getPermission
 
 const sideBarContent = [
   {
     name: '我的考试',
     pathName: '/home/myExam',
-    permission: [1, 2],
+    permission: [2]
   },
   {
     name: '成绩管理',
     pathName: '/home/grade',
-    permission: [1, 2],
+    permission: [1, 2]
   },
   {
     name: '个人设置',
     pathName: '/home/userSetting',
-    permission: [0, 1, 2],
+    permission: [0, 1, 2]
   },
   {
     name: '考试管理',
     pathName: '/home/examSetting',
-    permission: [0, 1],
+    permission: [0, 1]
   },
 
   {
     name: '题库管理',
     pathName: '/home/questionBank',
-    permission: [0, 1],
+    permission: [0, 1]
   },
 
   {
     name: '系统管理',
     pathName: '/home/systemSetting',
-    permission: [0],
+    permission: [0]
   },
-];
+  {
+    name: '更换账户',
+    pathName: '/login',
+    permission: [0, 1, 2]
+  }
+]
 
 // 设置.router-link-active类的样式
 const setRouterLinkActive = () => {
-  const routerLinkActive = document.querySelector('.router-link-active');
+  const routerLinkActive = document.querySelector('.router-link-active')
   if (routerLinkActive) {
-    routerLinkActive.style.backgroundColor = 'rgba(127, 198, 216, 0.5)';
-    routerLinkActive.style.color = '#fff';
+    routerLinkActive.style.backgroundColor = 'rgba(127, 198, 216, 0.5)'
+    routerLinkActive.style.color = '#fff'
   }
-};
+}
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .side-bar {
   position: relative;
   width: 100%;

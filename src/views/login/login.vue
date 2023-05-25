@@ -45,6 +45,7 @@ import { NForm, NFormItem, NInput, NButton, useMessage } from 'naive-ui'
 import { ref } from 'vue'
 import { login } from '../../apis/user.js'
 import { useRouter } from 'vue-router'
+import { useStore } from '../../store/main.js'
 
 export default {
   name: 'Login',
@@ -58,6 +59,7 @@ export default {
     })
     const router = useRouter()
     const message = useMessage()
+    const store = useStore()
 
     const goToRegister = () => {
       router.push('/register')
@@ -94,7 +96,10 @@ export default {
 
           login(no, email, password).then(res => {
             if (res.code === 200) {
+              // 保存用户信息
+              store.setUser(res.data)
               message.success(`${res.data.name}，欢迎回来！`)
+              router.push('/home')
             } else {
               message.error(res.message)
             }

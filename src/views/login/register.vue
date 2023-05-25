@@ -63,10 +63,13 @@
 import { NForm, NFormItem, NInput, NButton, useMessage } from 'naive-ui'
 import { ref } from 'vue'
 import { register } from '../../apis/user.js'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Register',
   setup() {
+    const router = useRouter()
+
     const formRef = ref(null)
     const modelRef = ref({
       user: {
@@ -115,10 +118,12 @@ export default {
         e.preventDefault()
         formRef.value?.validate().then(() => {
           const { name, age, id: no, email, password } = modelRef.value.user
-
           register(no, password, email, name, age).then((res) => {
             if (res.code === 200) {
               message.success('注册成功', { duration: 2000 })
+              setTimeout(() => {
+                router.push('/login')
+              }, 2000)
             } else {
               message.error('注册失败', { duration: 2000 })
             }

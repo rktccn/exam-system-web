@@ -1,6 +1,6 @@
 <template>
   <main>
-    <n-gradient-text type='info' class='examName'>{{ examSummary.examName}}</n-gradient-text>
+    <n-gradient-text type='info' class='examName'>{{ examSummary.examName }}</n-gradient-text>
     <section>
       <n-grid x-gap='12' :cols='6' class='base'>
         <n-gi class='base-info'>
@@ -20,16 +20,17 @@
             <n-space
               class='rank_item'
               justify='space-between'
-              v-for='item in 30'
-              :style="item === 1 ? `color:${themeVars.primaryColor};` : ''"
-            ><span>用户{{ item }}</span>
+              v-for='(item,index) in gradeList'
+              :style="index === 0 ? `color:${themeVars.primaryColor};` : ''"
+              @click='router.push(`/exam/${item.studentPaperId}/grade`)'
+            ><span>{{ item.name }}</span>
               <div class='rank_grade'>
-                <span>60</span>
+                <span>{{ item.score }}</span>
                 <n-progress
                   type='line'
                   :show-indicator='false'
                   status='info'
-                  :percentage='60'
+                  :percentage='Math.ceil(item.score / examSummary.totalScore * 100)'
                   rail-style='height:3px'
                 />
               </div>
@@ -42,7 +43,6 @@
       <n-grid x-gap='12' :cols='4' class='question' v-for='(item,index) in questionList' :key='index'>
         <n-gi :span='3'>
           <div>
-            <!-- TODO: 添加题目显示 -->
             <question-block :question-value='item'></question-block>
           </div>
         </n-gi>
@@ -83,10 +83,12 @@ import {
   TitleComponent
 } from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
-import { ref, provide, computed } from 'vue'
-import { getExamResultSummary } from '../apis/paper.js'
+import { ref, provide } from 'vue'
+import { getExamResultSummary, getExamScore } from '../apis/paper.js'
 import QuestionBlock from '../components/questionBlock.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const themeVars = useThemeVars()
 
 use([
@@ -99,12 +101,22 @@ use([
 
 provide(THEME_KEY, 'light')
 
-const examSummary = ref()
+const examSummary = ref({
+  examName: '',
+  totalScore: 0,
+  maxScore: 0,
+  minScore: 0,
+  avgScore: 0,
+  submitCount: 0,
+  totalCount: 0
+})
+
+const gradeList = ref([{}])
 
 const questionList = ref()
 
-const getData = () => {
-  getExamResultSummary(40).then(res => {
+const getData = async () => {
+  await getExamResultSummary(40).then(res => {
     examSummary.value = {
       examName: res.data.paper.paperName,
       totalScore: res.data.paper.totalScore,
@@ -126,6 +138,27 @@ const getData = () => {
 
     console.log(questionList.value)
   })
+
+  await getExamScore(40).then(res => {
+    gradeList.value = res.data.gradeList
+
+    gradeOption.value.series[0].data = [0, 0, 0, 0, 0]
+    // 按照得分率划分统计人数
+    res.data.gradeList.forEach(item => {
+      const rate = Math.ceil(item.score / examSummary.value.totalScore * 100)
+      if (rate < 60) {
+        gradeOption.value.series[0].data[0]++
+      } else if (rate < 70) {
+        gradeOption.value.series[0].data[1]++
+      } else if (rate < 80) {
+        gradeOption.value.series[0].data[2]++
+      } else if (rate < 90) {
+        gradeOption.value.series[0].data[3]++
+      } else {
+        gradeOption.value.series[0].data[4]++
+      }
+    })
+  })
 }
 
 getData()
@@ -142,12 +175,12 @@ const getColor = (val) => {
 
 const gradeOption = ref({
   title: {
-    text: '成绩分布图',
+    text: '得分率分布图',
     left: 'center'
   },
   xAxis: {
     type: 'category',
-    name: '分数',
+    name: '得分率',
     data: ['0-59', '60-69', '70-79', '80-89', '90-100']
   },
   yAxis: {
@@ -215,18 +248,23 @@ main {
     }
 
     .rank {
-      padding: 45px 25px;
+      padding: 45px 15px;
       font-size: 18px;
       font-weight: bolder;
 
 
       .rank_item:first-child {
-        margin-bottom: 16px;
+        margin-bottom: 8px;
       }
 
       .rank_item {
-        margin-bottom: 8px;
-        padding: 0 40px;
+        //margin-bottom: 8px;
+        padding: 4px 30px;
+
+        &:hover {
+          cursor: pointer;
+          background-color: #f5f5f5;
+        }
       }
 
       .rank_grade {

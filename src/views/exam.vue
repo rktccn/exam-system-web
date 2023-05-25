@@ -42,6 +42,11 @@
         @sendAnswer='getAnswer'
       ></exam-question-card>
     </div>
+
+
+    <n-modal :show='showLoading' style='box-shadow: none'>
+      <n-spin size='large' />
+    </n-modal>
   </main>
 </template>
 
@@ -52,7 +57,9 @@ import {
   NProgress,
   NButton,
   NPopconfirm,
-  NCountdown
+  NCountdown,
+  NModal,
+  NSpin
 } from 'naive-ui'
 import { ref, computed } from 'vue'
 import ExamQuestionCard from '../components/examQuestionCard.vue'
@@ -63,6 +70,7 @@ const route = useRoute()
 const router = useRouter()
 const questionListRef = ref(null)
 const timeLeft = ref(0) // 剩余时间
+const showLoading = ref(true) // 是否显示加载动画
 
 const percentage = computed(() => {
   return parseInt(
@@ -94,6 +102,7 @@ const scrollToQuestion = (index) => {
 
 // 获取试卷
 const getExamDetail = () => {
+  showLoading.value = true
   getExam(route.params.studentPaperId, 4).then((res) => {
     if (res.code !== 200) {
       router.push({ name: 'error', params: { message: res.msg } })
@@ -104,6 +113,10 @@ const getExamDetail = () => {
     timeLeft.value = new Date(res.data.paper.endTime) - Date.now()
     options.value = new Array(res.data.questionList.length).fill(null)
   })
+
+  setTimeout(() => {
+    showLoading.value = false
+  }, 1000)
 }
 
 getExamDetail()

@@ -1,4 +1,4 @@
-import http from '../utils/http.js';
+import http from '../utils/http.js'
 
 // 添加题目
 // params: {
@@ -14,21 +14,22 @@ import http from '../utils/http.js';
 //     }
 // }
 export const addQuestion = (data) => {
-  console.log('data', data);
+  console.log('data', data)
   return http({
     url: '/question/add',
     method: 'post',
-    data,
-  });
-};
+    data
+  })
+}
 
 // 获取题目列表及答案
-export const getQuestionList = () => {
+export const getQuestionList = (data) => {
   return http({
     url: '/question/list',
     method: 'get',
-  });
-};
+    params: { ...data }
+  })
+}
 
 // 修改题目
 // params: {
@@ -47,6 +48,15 @@ export const updateQuestion = (data) => {
   return http({
     url: '/question/update',
     method: 'post',
-    data,
-  });
-};
+    data
+  })
+}
+
+// 搜索题目
+export const searchQuestion = (data) => {
+  return http({
+    url: '/question/search',
+    method: 'get',
+    params: { ...data }
+  })
+}

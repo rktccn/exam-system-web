@@ -100,3 +100,14 @@ export const getPaperDetail = (paperId) => {
     }
   })
 }
+
+// 获取考试所有学生成绩
+export const getExamScore = (paperId) => {
+  return http({
+    url: '/paper/result-all',
+    method: 'get',
+    params: {
+      paperId
+    }
+  })
+}
