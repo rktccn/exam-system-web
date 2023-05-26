@@ -141,7 +141,6 @@ const searchValue = ref('')
 
 const doSearch = (v) => {
   if (v.keyCode === 13) {
-    console.log('搜索')
     paginationValue.value.currentPage = 1
     getQuestions()
   }

@@ -63,7 +63,6 @@ const examList = ref({
 })
 
 const userId = store.getId
-console.log(userId)
 
 // 获取活跃的考试
 const getActiveExam = () => {

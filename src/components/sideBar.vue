@@ -13,6 +13,10 @@
       </template>
 
       <p class='nav-item'>{{ userPermission }}</p>
+      <div class='user-info'>
+        <p>{{ userInfo.userId }}</p>
+        <p>{{ userInfo.name }}</p>
+      </div>
     </nav>
   </div>
 </template>
@@ -20,9 +24,12 @@
 <script setup>
 import { useStore } from '../store/main.js'
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 const store = useStore()
 const router = useRouter()
+
+const userInfo = ref(store.getUser)
 
 const userPermission = store.getPermission
 
@@ -32,11 +39,11 @@ const sideBarContent = [
     pathName: '/home/myExam',
     permission: [2]
   },
-  {
-    name: '成绩管理',
-    pathName: '/home/grade',
-    permission: [1, 2]
-  },
+  // {
+  //   name: '成绩管理',
+  //   pathName: '/home/grade',
+  //   permission: [1, 2]
+  // },
   {
     name: '个人设置',
     pathName: '/home/userSetting',
@@ -96,6 +103,8 @@ const setRouterLinkActive = () => {
 }
 
 .nav {
+  position: relative;
+  height: 100%;
   padding: 0 10px;
 
   .nav-item {
@@ -147,6 +156,15 @@ const setRouterLinkActive = () => {
         height: 70%;
       }
     }
+  }
+
+  .user-info {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    opacity: 0.6;
+    font-size: 16px;
+    font-weight: 600;
   }
 }
 </style>

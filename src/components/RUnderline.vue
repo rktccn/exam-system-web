@@ -1,33 +1,33 @@
 <template>
-  <div class="underline">
-    <div class="underline-line" :style="underLineStyle"></div>
-    <div class="underline-content">
+  <div class='underline'>
+    <div class='underline-line' :style='underLineStyle'></div>
+    <div class='underline-content'>
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script setup>
-import { commonLight } from 'naive-ui';
-import { computed } from 'vue';
+import { commonLight } from 'naive-ui'
+import { computed } from 'vue'
 
 const props = defineProps({
   type: {
     type: String,
-    default: 'success' | 'error',
-  },
-});
+    default: 'success' | 'error'
+  }
+})
 
 const underLineStyle = computed(() => {
-  let style;
-  if (props.type === 'success') style = commonLight.successColor;
-  else if (props.type === 'error') style = commonLight.errorColor;
-  else style = commonLight.primaryColor;
-  return { backgroundColor: style };
-});
+  let style
+  if (props.type === 'success') style = commonLight.successColor
+  else if (props.type === 'error') style = commonLight.errorColor
+  else style = commonLight.primaryColor
+  return { backgroundColor: style }
+})
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .underline {
   position: relative;
   display: inline-block;

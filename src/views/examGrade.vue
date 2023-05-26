@@ -29,20 +29,6 @@
             :show-answer='true'
           ></exam-question-card>
         </template>
-        <template v-for='(item, index) in questionList' :key='index'>
-          <exam-question-card
-            :question='item'
-            :qindex='index'
-            :show-answer='true'
-          ></exam-question-card>
-        </template>
-        <template v-for='(item, index) in questionList' :key='index'>
-          <exam-question-card
-            :question='item'
-            :qindex='index'
-            :show-answer='true'
-          ></exam-question-card>
-        </template>
       </main>
     </section>
   </main>
@@ -99,7 +85,6 @@ const alterModalShow = () => {
 }
 
 getExamResult(route.params.studentPaperId).then((res) => {
-  console.log(res)
   result.value.paperName = res.data.paper.paperName
   result.value.score = res.data.studentPaper.score
   result.value.submitTime = res.data.studentPaper.submitTime
@@ -128,7 +113,6 @@ getExamResult(route.params.studentPaperId).then((res) => {
     })
   })
 
-  console.log(questionList.value)
 })
 </script>
 
@@ -152,6 +136,8 @@ main {
     padding: 88px 68px;
     background-color: #fff;
     border-radius: 25px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
 
     & > * {
       margin: 8px 0;

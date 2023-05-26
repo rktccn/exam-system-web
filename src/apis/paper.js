@@ -6,8 +6,8 @@ export const createPaper = (data) => {
     url: '/paper/add',
     method: 'post',
     data: {
-      teacherId: 2,
-      ...data
+      teacherId: data.teacherId,
+      ...data.val
     }
   })
 }

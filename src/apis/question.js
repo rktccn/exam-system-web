@@ -14,7 +14,6 @@ import http from '../utils/http.js'
 //     }
 // }
 export const addQuestion = (data) => {
-  console.log('data', data)
   return http({
     url: '/question/add',
     method: 'post',

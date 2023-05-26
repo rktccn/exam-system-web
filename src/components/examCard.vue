@@ -40,7 +40,6 @@ const props = defineProps({
 
 // 跳转到考试页面
 const jumpToExam = () => {
-  console.log(props.examInfo)
   if (props.examInfo.studentPaperId) {
     router.push({
       name: 'exam',

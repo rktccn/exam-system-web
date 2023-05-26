@@ -43,9 +43,7 @@ export function getAllUser(res) {
     url: '/role/all',
     method: 'get',
     params: {
-      limit: res?.limit ?? 10,
-      offset: res?.offset ?? 0,
-      permission: res?.permission
+      ...res
     }
   })
 }

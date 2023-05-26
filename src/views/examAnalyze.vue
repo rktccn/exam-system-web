@@ -86,8 +86,9 @@ import VChart, { THEME_KEY } from 'vue-echarts'
 import { ref, provide } from 'vue'
 import { getExamResultSummary, getExamScore } from '../apis/paper.js'
 import QuestionBlock from '../components/questionBlock.vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
 const themeVars = useThemeVars()
 
@@ -116,7 +117,8 @@ const gradeList = ref([{}])
 const questionList = ref()
 
 const getData = async () => {
-  await getExamResultSummary(40).then(res => {
+  await getExamResultSummary(route.params.paperId).then(res => {
+
     examSummary.value = {
       examName: res.data.paper.paperName,
       totalScore: res.data.paper.totalScore,
@@ -126,7 +128,6 @@ const getData = async () => {
       submitCount: res.data.paperInfo.submitCount,
       totalCount: res.data.paperInfo.count
     }
-    console.log(examSummary.value)
 
     questionList.value = res.data.questionAccuracy.map(item => {
       return {
@@ -135,11 +136,9 @@ const getData = async () => {
         options: item.options
       }
     })
-
-    console.log(questionList.value)
   })
 
-  await getExamScore(40).then(res => {
+  await getExamScore(route.params.paperId).then(res => {
     gradeList.value = res.data.gradeList
 
     gradeOption.value.series[0].data = [0, 0, 0, 0, 0]
@@ -212,7 +211,7 @@ const gradeOption = ref({
 
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 main {
   padding: 35px 120px;
 

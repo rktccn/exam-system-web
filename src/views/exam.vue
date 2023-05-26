@@ -65,7 +65,9 @@ import { ref, computed } from 'vue'
 import ExamQuestionCard from '../components/examQuestionCard.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getExam, submitPaper } from '../apis/paper.js'
+import { useStore } from '../store/main.js'
 
+const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const questionListRef = ref(null)
@@ -103,7 +105,12 @@ const scrollToQuestion = (index) => {
 // 获取试卷
 const getExamDetail = () => {
   showLoading.value = true
-  getExam(route.params.studentPaperId, 4).then((res) => {
+  getExam(route.params.studentPaperId, store.userId).then((res) => {
+    if (res.code === 102) {
+      router.push({ name: 'examResult', params: { studentPaperId: route.params.studentPaperId } })
+      return
+    }
+
     if (res.code !== 200) {
       router.push({ name: 'error', params: { message: res.msg } })
       return

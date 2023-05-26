@@ -7,7 +7,8 @@ export const useStore = defineStore('main', {
       permission: null,
       name: null,
       no: null,
-      email: null
+      email: null,
+      age: null
     }
   },
   getters: {
@@ -19,6 +20,16 @@ export const useStore = defineStore('main', {
     },
     getName() {
       return this.name
+    },
+    getUser() {
+      return {
+        userId: this.userId,
+        permission: this.permission,
+        name: this.name,
+        no: this.no,
+        email: this.email,
+        age: this.age
+      }
     }
   },
   actions: {
@@ -33,6 +44,7 @@ export const useStore = defineStore('main', {
       this.name = user.name
       this.no = user.no
       this.email = user.email
+      this.age = user.age
     }
   },
   // 开启数据缓存

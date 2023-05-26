@@ -17,7 +17,7 @@
           v-for='(item, index) in examList.active'
           :key='index'
         >
-          <exam-card :exam-info='item' />
+          <exam-card :exam-info='item' @click='goToAnalyze(item.paperId)' />
         </n-gi>
       </n-grid>
       <n-pagination
@@ -52,12 +52,13 @@
     <!--添加考试窗口-->
     <n-modal v-model:show='showModal' class='setExam'>
       <n-card
-        style='width: 600px'
+        style='width: 600px;'
         title='创建考试'
         :bordered='false'
         size='huge'
         aria-modal='true'
       >
+
         <!--        <pre>{{ examValue }}</pre>-->
 
         <p>考试名称</p>
@@ -121,7 +122,8 @@ import {
   NInput,
   NDatePicker,
   NTransfer,
-  NPagination
+  NPagination,
+  NScrollbar
 } from 'naive-ui'
 import ExamCard from '../../components/examCard.vue'
 import { computed, ref } from 'vue'
@@ -129,8 +131,10 @@ import { getQuestionList } from '../../apis/question.js'
 import { getAllUser } from '../../apis/user.js'
 import { createPaper, getPaperList } from '../../apis/paper.js'
 import { useRouter } from 'vue-router'
+import { useStore } from '../../store/main.js'
 
 const router = useRouter()
+const sotre = useStore()
 
 const examList = ref({
   active: [],
@@ -186,12 +190,10 @@ const getFinishedExam = () => {
   getPaperList(0, offset, 16).then((res) => {
     examList.value.finished = res.rows
     examList.value.finishedCount = res.count
-    console.log(res)
   })
 }
 
 const goToAnalyze = (examId) => {
-  console.log(examId)
   router.push({
     name: 'examAnalyze',
     params: { paperId: examId }
@@ -204,7 +206,8 @@ const createExam = () => {
 }
 
 const submitExam = () => {
-  createPaper(examValue.value).then((res) => {
+  const teacherId = sotre.userId
+  createPaper({ teacherId, val: examValue.value }).then((res) => {
     getActiveExam()
     getFinishedExam()
     showModal.value = false
@@ -214,7 +217,7 @@ const submitExam = () => {
 getActiveExam()
 getFinishedExam()
 getQuestionList().then((res) => {
-  questionList.value = res.data.questionList.map((item) => {
+  questionList.value = res.data.questionList.rows.map((item) => {
     return { label: item.content, value: item.questionId, score: item.score }
   })
 })

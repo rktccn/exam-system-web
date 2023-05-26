@@ -8,10 +8,11 @@ import { useStore } from '../store/main'
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/home/userSetting'
   },
   {
     path: '/home',
+    redirect: '/home/userSetting',
     name: 'index',
     component: () => import('../views/home.vue'),
     children: [

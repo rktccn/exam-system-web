@@ -20,13 +20,12 @@
         />
       </n-form-item>
       <n-form-item label='年龄'>
-        <n-input
+        <n-input-number
           round
           placeholder='请输入年龄'
           v-model:value='userValue.info.age'
         />
       </n-form-item>
-      <n-button type='info'>提交</n-button>
     </div>
 
     <n-divider title-placement='left' class='subtitle'> 密码修改</n-divider>
@@ -38,11 +37,8 @@
           v-model:value='userValue.password'
         />
       </n-form-item>
-      <n-button type='info'>提交</n-button>
+      <n-button type='info' @click='submitChange'>提交</n-button>
     </div>
-    <pre>
-    {{ userValue }}
-    </pre>
   </main>
 </template>
 
@@ -53,21 +49,37 @@ import {
   NInput,
   NFormItem,
   NButton,
-  NForm
+  NInputNumber,
+  useMessage
 } from 'naive-ui'
 import { ref } from 'vue'
+import { updateUser } from '../../apis/user.js'
+import { useStore } from '../../store/main.js'
 
-const formRef = ref(null)
+const store = useStore()
+const message = useMessage()
 
 const userValue = ref({
   info: {
-    username: '',
-    email: '',
-    age: ''
+    username: store.name,
+    email: store.email,
+    age: store.age
   },
   password: ''
 })
 
+
+const submitChange = () => {
+  const { userId, no, permission } = store.getUser
+  const { username: name, email, age } = userValue.value.info
+  const password = userValue.value.password
+
+  updateUser(userId, no, email, name, age, password, permission).then(res => {
+    message.success('修改成功')
+  }).catch(err => {
+    message.error('修改失败')
+  })
+}
 
 </script>
 
