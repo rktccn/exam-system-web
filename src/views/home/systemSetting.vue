@@ -1,4 +1,4 @@
-<template xmlns='http://www.w3.org/1999/html'>
+<template>
   <main>
     <n-gradient-text type='info' class='title'> 系统设置</n-gradient-text>
 
@@ -29,11 +29,11 @@
         </n-card>
       </span>
     </div>
-    <n-divider title-placement='left' class='subtitle'> 用户设置</n-divider>
+    <n-divider title-placement='left' class='subtitle'>用户设置</n-divider>
     <n-data-table
       :columns='columns'
       :data='userData'
-      :max-height='260'
+      :max-height='480'
       virtual-scroll
       :row-props='rowProps'
       :on-scroll='onScroll'
@@ -100,24 +100,6 @@
         </n-space>
       </n-card>
     </n-modal>
-
-    <!--教师学生关联窗口-->
-    <n-modal v-model:show='linkManage'>
-      <n-card
-        style='width: 600px'
-        title='设置用户'
-        :bordered='false'
-        size='huge'
-        role='dialog'
-        aria-modal='true'
-      >
-        <n-transfer
-          ref='transfer'
-          v-model:value='teacherLink.list'
-          :options='studentList'
-        />
-      </n-card>
-    </n-modal>
   </main>
 </template>
 
@@ -160,6 +142,27 @@ const userValue = ref({
   password: '',
   permission: 0
 })
+
+const dataValue = ref({
+  student: 0,
+  teacher: 0,
+  paper: 0
+})
+
+const permissionOpts = ref([
+  {
+    label: '管理员',
+    value: 0
+  },
+  {
+    label: '教师',
+    value: 1
+  },
+  {
+    label: '学生',
+    value: 2
+  }
+])
 
 
 const columns = [

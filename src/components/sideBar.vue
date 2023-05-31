@@ -12,9 +12,8 @@
         </router-link>
       </template>
 
-      <p class='nav-item'>{{ userPermission }}</p>
       <div class='user-info'>
-        <p>{{ userInfo.userId }}</p>
+        <p>{{ userInfo.no }}</p>
         <p>{{ userInfo.name }}</p>
       </div>
     </nav>

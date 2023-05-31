@@ -3,7 +3,14 @@
     <n-gradient-text type='info' class='title'> 个人设置</n-gradient-text>
 
     <n-divider title-placement='left' class='subtitle'> 信息修改</n-divider>
-
+    <n-grid x-gap='12' :cols='4' style='margin-bottom: 16px'>
+      <n-gi>
+        编号：&nbsp;{{ userValue.info.no }}
+      </n-gi>
+      <n-gi>
+        权限组：&nbsp;{{ userValue.info.permission }}
+      </n-gi>
+    </n-grid>
     <div>
       <n-form-item label='用户名'>
         <n-input
@@ -50,9 +57,11 @@ import {
   NFormItem,
   NButton,
   NInputNumber,
+  NGrid,
+  NGi,
   useMessage
 } from 'naive-ui'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { updateUser } from '../../apis/user.js'
 import { useStore } from '../../store/main.js'
 
@@ -63,7 +72,18 @@ const userValue = ref({
   info: {
     username: store.name,
     email: store.email,
-    age: store.age
+    age: store.age,
+    permission: computed(() => {
+      switch (store.permission) {
+        case 0:
+          return '管理员'
+        case 1:
+          return '教师'
+        case 2:
+          return '学生'
+      }
+    }),
+    no: store.no
   },
   password: ''
 })

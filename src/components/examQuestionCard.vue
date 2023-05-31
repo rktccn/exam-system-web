@@ -57,7 +57,7 @@
           </div>
           <RUnderline
             v-if='showAnswer'
-            :type="question.options[0].content === '正确' ? 'success' : 'error'"
+            :type="question.answer.isCorrect ? 'success' : 'error'"
           >正确
           </RUnderline
           >
@@ -74,7 +74,7 @@
           </div>
           <RUnderline
             v-if='showAnswer'
-            :type="question.options[0].content === '错误' ? 'success' : 'error'"
+            :type="!question.answer.isCorrect ? 'success' : 'error'"
           >错误
           </RUnderline
           >
