@@ -57,7 +57,7 @@
           </div>
           <RUnderline
             v-if='showAnswer'
-            :type="question.answer.isCorrect ? 'success' : 'error'"
+            :type="question.options[0].isCorrect ? 'success' : 'error'"
           >正确
           </RUnderline
           >
@@ -74,7 +74,7 @@
           </div>
           <RUnderline
             v-if='showAnswer'
-            :type="!question.answer.isCorrect ? 'success' : 'error'"
+            :type="question.options[1].isCorrect ? 'success' : 'error'"
           >错误
           </RUnderline
           >
@@ -164,6 +164,8 @@ const props = defineProps({
     }
   }
 })
+
+console.log(props.question)
 
 const emit = defineEmits(['sendAnswer'])
 
